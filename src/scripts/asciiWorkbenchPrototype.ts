@@ -95,6 +95,7 @@ dialog.addEventListener('close', () =>
 );
 
 function createDesk() {
+  const mobileView = window.matchMedia('(max-width: 850px)');
   const renderer = new THREE.WebGLRenderer({
     canvas: output,
     antialias: false,
@@ -699,19 +700,23 @@ function createDesk() {
     const aspect = width / height;
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
-    const radius = Math.max(16.1, (width < 800 ? 25 : 21) / aspect);
-    const horizontal = Math.cos(elevation) * radius - distance;
+    // The compact desk needs a clearer view of the top and side surfaces.
+    // Keep the stored orbit pose and all desktop camera values unchanged.
+    const viewTheta = theta + (mobileView.matches ? 0.18 : 0);
+    const viewElevation = elevation + (mobileView.matches ? 0.09 : 0);
+    const radius = Math.max(16.1, (mobileView.matches ? 24.5 : (width < 800 ? 25 : 21)) / aspect);
+    const horizontal = Math.cos(viewElevation) * radius - distance;
     camera.position.set(
-      target.x + Math.sin(theta) * horizontal,
-      target.y + Math.sin(elevation) * radius,
-      Math.cos(theta) * horizontal,
+      target.x + Math.sin(viewTheta) * horizontal,
+      target.y + Math.sin(viewElevation) * radius,
+      Math.cos(viewTheta) * horizontal,
     );
     camera.position.lerp(journalEye, journey);
     viewFocus
       .set(
-        target.x - Math.sin(theta) * distance,
+        target.x - Math.sin(viewTheta) * distance,
         target.y,
-        target.z - Math.cos(theta) * distance,
+        target.z - Math.cos(viewTheta) * distance,
       )
       .lerp(journalFocus, journey);
     camera.lookAt(viewFocus);
@@ -768,7 +773,7 @@ function createDesk() {
     const rect = stage.getBoundingClientRect();
     width = Math.max(1, Math.round(rect.width));
     height = Math.max(1, Math.round(rect.height));
-    ascii.resize(width, height, large);
+    ascii.resize(width, height, large, mobileView.matches);
     requestPaint();
   }
   function hit(event: PointerEvent) {

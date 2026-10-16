@@ -157,6 +157,7 @@ const drawShader = `
   uniform sampler2D atlas;
   uniform sampler2D sourceImage;
   uniform vec2 grid;
+  uniform float mobileDetail;
   varying vec2 uvOut;
   void main() {
     vec2 cell=floor(uvOut*grid);
@@ -178,7 +179,11 @@ const drawShader = `
     float peak=max(color.r,max(color.g,color.b));
     vec3 inkColor=color/max(peak,.001)*(.65+.35*peak);
     vec3 surface=color*.24;
-    gl_FragColor=vec4(mix(surface,inkColor,ink),1.0);
+    vec3 asciiColor=mix(surface,inkColor,ink);
+    // On the small desk, preserve continuous geometry and lighting beneath a
+    // lighter character layer. Cell-averaged color alone erases thin features.
+    vec3 detail=pow(clamp(texture2D(sourceImage,uvOut).rgb,0.0,1.0),vec3(1.0/2.2));
+    gl_FragColor=vec4(mix(asciiColor,detail,mobileDetail),1.0);
   }
 `;
 
@@ -201,18 +206,24 @@ export class AsciiShapeRenderer {
     this.match=new THREE.ShaderMaterial({vertexShader,fragmentShader:matchShader,depthTest:false,depthWrite:false,toneMapped:false,
       uniforms:{sourceImage:{value:this.source.texture},glyphShapes:{value:this.font.descriptors},grid:{value:this.grid}}});
     this.draw=new THREE.ShaderMaterial({vertexShader,fragmentShader:drawShader,depthTest:false,depthWrite:false,toneMapped:false,
-      uniforms:{selectedGlyphs:{value:this.selected.texture},atlas:{value:this.font.texture},sourceImage:{value:this.source.texture},grid:{value:this.grid}}});
+      uniforms:{selectedGlyphs:{value:this.selected.texture},atlas:{value:this.font.texture},sourceImage:{value:this.source.texture},grid:{value:this.grid},mobileDetail:{value:0}}});
     this.quad=new THREE.Mesh(this.plane,this.match);this.quad.frustumCulled=false;this.passScene.add(this.quad);
   }
 
-  resize(width:number,height:number,large:boolean) {
+  resize(width:number,height:number,large:boolean,mobileDesk=false) {
     // Exact atlas aspect, square sampling in physical space, and high-DPI output.
-    const columns=Math.max(24,Math.floor(width/(large?9:5)));
+    const cellWidth=mobileDesk ? (large?5:3) : (large?9:5);
+    const columns=Math.max(24,Math.floor(width/cellWidth));
     const rows=Math.max(20,Math.round(height/(width/columns*TILE_H/TILE_W)));
     this.grid.set(columns,rows);
-    this.source.setSize(columns*8,rows*14);
+    const pixelRatio=Math.min(devicePixelRatio||1,mobileDesk?3:2);
+    this.source.setSize(
+      Math.max(columns*8,mobileDesk?Math.round(width*pixelRatio):0),
+      Math.max(rows*14,mobileDesk?Math.round(height*pixelRatio):0),
+    );
     this.selected.setSize(columns,rows);
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+    this.draw.uniforms.mobileDetail!.value=mobileDesk ? 0.6 : 0;
+    this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setSize(width,height,false);
   }
 
