@@ -1,0 +1,452 @@
+---
+// One shared synthetic lap links the route, metric traces, and 3D projections.
+const anomaly = 58;
+const samples = Array.from({ length: 96 }, (_, i) => {
+  const a = (i / 95) * Math.PI * 2,
+    suspect = Math.abs(i - anomaly) <= 1;
+  return {
+    x: Math.cos(a) * 0.9 + (i === anomaly ? 0.16 : 0),
+    y: Math.sin(a) * 0.66 + (i === anomaly ? -0.18 : 0),
+    speed: 158 + 24 * Math.sin(a) ** 2 + (i === anomaly ? 92 : 0),
+    elevation: 18 + 3 * Math.sin(a * 2) + (i === anomaly ? 38 : 0),
+    quality: suspect ? (i === anomaly ? 28 : 62) : 96 - 3 * Math.cos(a * 3),
+  };
+});
+const metrics = [
+  {
+    id: 'speed' as const,
+    label: 'Speed',
+    unit: 'mph',
+    min: 140,
+    max: 280,
+    note: 'An abrupt speed spike coincides with a displaced GPS sample.',
+  },
+  {
+    id: 'elevation' as const,
+    label: 'Elevation',
+    unit: 'm',
+    min: 10,
+    max: 65,
+    note: 'A sudden height jump stands apart from the surrounding elevation profile.',
+  },
+  {
+    id: 'quality' as const,
+    label: 'GPS quality',
+    unit: ' / 100',
+    min: 0,
+    max: 100,
+    note: 'A drop in the illustrative quality score flags the same suspicious region.',
+  },
+];
+const norm = (value: number, min: number, max: number) =>
+  (value - min) / (max - min);
+const base = (p: { x: number; y: number }) => ({
+  x: 280 + p.x * 184,
+  y: 152 + p.y * 115,
+});
+const projected = (p: { x: number; y: number }, z = 0) => ({
+  x: 280 + p.x * 175 + p.y * 105,
+  y: 226 + p.y * 65 - p.x * 24 - z * 150,
+});
+const path = (points: { x: number; y: number }[]) =>
+  points
+    .map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+    .join(' ');
+const floor = samples.map((p) => projected(p));
+---
+
+<figure class="telemetry" data-telemetry>
+  <div class="figure-label">
+    <span>NASCAR / DATA INSPECTION</span>
+    <span>ILLUSTRATION</span>
+  </div>
+  <div class="telemetry-toolbar" data-telemetry-controls hidden>
+    <div role="group" aria-label="Telemetry view">
+      <button type="button" data-view="map" aria-pressed="true">
+        2D map
+      </button>
+      <button type="button" data-view="space" aria-pressed="false">
+        3D plot
+      </button>
+    </div>
+    <label>
+      Metric
+      <select aria-label="Telemetry metric">
+        <option value="speed">Speed</option>
+        <option value="elevation">Elevation</option>
+        <option value="quality">GPS quality</option>
+      </select>
+    </label>
+  </div>
+  {metrics.map((metric, index) => {
+    const values = samples.map((p) => p[metric.id]);
+    const raised = samples.map((p) =>
+      projected(p, norm(p[metric.id], metric.min, metric.max)),
+    );
+    const marker2 = base(samples[anomaly]!),
+      marker3 = raised[anomaly]!;
+    const trace = values.map((v, i) => ({
+      x: 45 + (i / 95) * 470,
+      y: 81 - norm(v, metric.min, metric.max) * 56,
+    }));
+    return (
+      <div data-metric-panel={metric.id} hidden={index !== 0}>
+        <svg
+          class="map-plot"
+          data-plot="map"
+          viewBox="0 0 560 320"
+          role="img"
+          aria-label={`2D route over a schematic map, colored by ${metric.label.toLowerCase()}, with a GPS displacement highlighted.`}
+        >
+          <rect width="560" height="320" fill="#101b22" />
+          <g fill="none" stroke="#20313b" stroke-width="1">
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              <path
+                d={`M0 ${38 + i * 43}Q160 ${i * 43 - 12} 300 ${i * 43 + 22}T560 ${i * 43 + 12}`}
+              />
+            ))}
+          </g>
+          <path
+            d="M0 278L158 278L206 290H560 M25 0V74L65 108V232L25 280V320"
+            fill="none"
+            stroke="#3c4b54"
+            stroke-width="8"
+          />
+          <path
+            d="M0 278L158 278L206 290H560 M25 0V74L65 108V232L25 280V320"
+            fill="none"
+            stroke="#17242d"
+            stroke-width="4"
+          />
+          <ellipse
+            cx="280"
+            cy="152"
+            rx="171"
+            ry="82"
+            fill="none"
+            stroke="#41515b"
+            stroke-width="18"
+          />
+          <ellipse
+            cx="280"
+            cy="152"
+            rx="149"
+            ry="61"
+            fill="#15272b"
+            stroke="#283c44"
+          />
+          <g fill="#2c3a42" stroke="#3c505a">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <rect x={211 + i * 23} y="255" width="17" height="9" />
+            ))}
+            <path d="M192 32H360V42H192Z" />
+          </g>
+          <text x="216" y="155" class="map-label">
+            SCHEMATIC INFIELD
+          </text>
+          {samples.slice(1).map((p, i) => {
+            const prev = base(samples[i]!),
+              next = base(p),
+              v = norm(p[metric.id], metric.min, metric.max);
+            return (
+              <path
+                d={`M${prev.x} ${prev.y}L${next.x} ${next.y}`}
+                fill="none"
+                stroke={
+                  Math.abs(i - anomaly) < 2
+                    ? '#ed9d78'
+                    : v > 0.55
+                      ? '#b1dfb5'
+                      : '#75c7df'
+                }
+                stroke-width="3"
+              />
+            );
+          })}
+          <circle
+            cx={marker2.x}
+            cy={marker2.y}
+            r="9"
+            fill="#101b22"
+            stroke="#ed9d78"
+            stroke-width="2"
+          />
+          <path
+            d={`M${marker2.x} ${marker2.y - 12}V40H230`}
+            fill="none"
+            stroke="#ed9d78"
+            stroke-dasharray="3 4"
+          />
+          <text x="236" y="44" class="alert">
+            GPS DISPLACEMENT
+          </text>
+          <text x="22" y="305">
+            LOCAL X / Y · GEOGRAPHIC OVERLAY
+          </text>
+        </svg>
+        <svg
+          class="space-plot"
+          data-plot="space"
+          viewBox="0 0 560 320"
+          role="img"
+          aria-label={`3D plot of local X and Y position with ${metric.label.toLowerCase()} on the vertical axis. A suspicious sample departs from the lap profile.`}
+          style="display:none"
+        >
+          <rect width="560" height="320" fill="#101b22" />
+          <g fill="none" stroke="#293c47" stroke-width="1">
+            {[-1, -0.5, 0, 0.5, 1].map((n) => (
+              <>
+                <path
+                  d={path([
+                    projected({ x: n, y: -0.8 }),
+                    projected({ x: n, y: 0.8 }),
+                  ])}
+                />
+                <path
+                  d={path([
+                    projected({ x: -1, y: n * 0.8 }),
+                    projected({ x: 1, y: n * 0.8 }),
+                  ])}
+                />
+              </>
+            ))}
+            <path d={path(floor)} stroke-dasharray="3 4" />
+            {raised
+              .filter((_, i) => i % 5 === 0)
+              .map((p, i) => (
+                <path d={path([floor[i * 5]!, p])} stroke="#3c5966" />
+              ))}
+          </g>
+          <path d="M40 250V44" stroke="#73919e" fill="none" />
+          <text x="20" y="28">
+            Z / {metric.label.toUpperCase()}
+          </text>
+          <text x="386" y="300">
+            LOCAL X
+          </text>
+          <text x="60" y="302">
+            LOCAL Y
+          </text>
+          <path
+            d={path(raised)}
+            stroke="#86d7ee"
+            stroke-width="2.5"
+            fill="none"
+          />
+          <path
+            d={path([floor[anomaly]!, marker3])}
+            stroke="#ed9d78"
+            stroke-width="1.5"
+            stroke-dasharray="3 4"
+            fill="none"
+          />
+          <circle
+            cx={marker3.x}
+            cy={marker3.y}
+            r="7"
+            fill="#101b22"
+            stroke="#ed9d78"
+            stroke-width="2.5"
+          />
+          <path
+            d={`M${marker3.x + 10} ${marker3.y}H${marker3.x + 38}`}
+            stroke="#ed9d78"
+          />
+          <text x={marker3.x + 44} y={marker3.y + 4} class="alert">
+            SAMPLE 59
+          </text>
+        </svg>
+        <svg
+          class="metric-trace"
+          viewBox="0 0 560 110"
+          role="img"
+          aria-label={`${metric.label} plotted over the sample sequence, highlighting sample 59.`}
+        >
+          <rect width="560" height="110" fill="#0d161c" />
+          <path d="M45 20V85H515 M45 52H515" stroke="#2d3f49" fill="none" />
+          <path d={path(trace)} fill="none" stroke="#86d7ee" stroke-width="2" />
+          <path
+            d={`M${trace[anomaly]!.x} 15V85`}
+            stroke="#ed9d78"
+            stroke-dasharray="3 3"
+          />
+          <circle
+            cx={trace[anomaly]!.x}
+            cy={trace[anomaly]!.y}
+            r="4"
+            fill="#ed9d78"
+          />
+          <text x="45" y="103">
+            SAMPLE SEQUENCE
+          </text>
+          <text x="390" y="16">
+            {metric.label.toUpperCase()}
+          </text>
+        </svg>
+        <div class="sample-note" aria-live="polite">
+          <strong>
+            <small>Sample 59</small>
+            {Math.round(values[anomaly]!)}
+            {metric.unit === ' / 100' ? metric.unit : ` ${metric.unit}`}
+          </strong>
+          <span>{metric.note}</span>
+        </div>
+      </div>
+    );
+  })}
+  <figcaption>
+    Linked 2D/3D views with synthetic readings and a schematic basemap. Change
+    the metric to inspect the same sample.
+  </figcaption>
+</figure>
+<script>
+  const telemetry = document.querySelector<HTMLElement>('[data-telemetry]');
+  if (telemetry) {
+    telemetry
+      .querySelector('[data-telemetry-controls]')
+      ?.removeAttribute('hidden');
+    telemetry
+      .querySelectorAll<HTMLButtonElement>('[data-view]')
+      .forEach((button) =>
+        button.addEventListener('click', () => {
+          telemetry
+            .querySelectorAll('[data-view]')
+            .forEach((option) =>
+              option.setAttribute('aria-pressed', String(option === button)),
+            );
+          telemetry
+            .querySelectorAll<SVGElement>('[data-plot]')
+            .forEach((plot) => {
+              plot.style.display =
+                plot.getAttribute('data-plot') === button.dataset.view
+                  ? ''
+                  : 'none';
+            });
+        }),
+      );
+    telemetry.querySelector('select')?.addEventListener('change', (event) => {
+      const value = (event.target as HTMLSelectElement).value;
+      telemetry
+        .querySelectorAll('[data-metric-panel]')
+        .forEach((panel) =>
+          panel.toggleAttribute(
+            'hidden',
+            panel.getAttribute('data-metric-panel') !== value,
+          ),
+        );
+    });
+  }
+</script>
+<style>
+  .telemetry {
+    margin: 0;
+  }
+  .figure-label {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: #97b6bf;
+    margin-bottom: 12px;
+  }
+  .figure-label span:last-child {
+    color: #8c969e;
+  }
+  .telemetry-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #30424c;
+    background: #0e181f;
+  }
+  .telemetry-toolbar[hidden],
+  [data-metric-panel][hidden],
+  svg[hidden] {
+    display: none;
+  }
+  .telemetry-toolbar > div {
+    display: flex;
+    gap: 4px;
+  }
+  button,
+  select {
+    font: inherit;
+    font-size: 11px;
+    color: #b5c9d2;
+    border: 1px solid #3d525e;
+    background: #101f28;
+    min-height: 34px;
+    padding: 7px 9px;
+  }
+  button[aria-pressed='true'] {
+    color: #0b1b21;
+    background: #b5dce8;
+    border-color: #b5dce8;
+  }
+  label {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    font-size: 10px;
+    color: #97b6bf;
+  }
+  button:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #ed9d78;
+    outline-offset: 3px;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  svg text {
+    fill: #a0b9c4;
+    font:
+      12px Consolas,
+      monospace;
+  }
+  svg .map-label {
+    font-size: 10px;
+    fill: #6f929b;
+  }
+  svg .alert {
+    fill: #edac8b;
+  }
+  .metric-trace {
+    border-top: 1px solid #2a3a44;
+  }
+  .sample-note {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 13px;
+    padding: 13px 12px;
+    background: #121c23;
+    border-top: 1px solid #30424c;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .sample-note strong {
+    font-weight: 400;
+    color: #edac8b;
+  }
+  .sample-note small {
+    display: block;
+    color: #a9b8c0;
+    font-size: 9px;
+  }
+  .sample-note span {
+    color: #b5c7cf;
+  }
+  figcaption {
+    font-size: 11px;
+    color: #929da6;
+    line-height: 1.7;
+    margin-top: 12px;
+  }
+</style>

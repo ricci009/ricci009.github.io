@@ -1,0 +1,286 @@
+---
+import { travelChapters } from '../data/careerWorld';
+import '../styles/careerWorld.css';
+import '../styles/careerGame.css';
+---
+
+<main class="career-world" id="career-world">
+  <section class="world-intro">
+    <div>
+      <p class="world-eyebrow">RICCARDO SALZMANN / SOFTWARE ENGINEER</p>
+      <h1>
+        A few places.
+        <br />
+        <em>A world to explore.</em>
+      </h1>
+    </div>
+    <div class="world-intro-note">
+      <span class="tiny-star">✦</span>
+      <p>
+        From Michigan to Germany to Durham.
+        <br />
+        Grab your backpack. Come on in.
+      </p>
+      <span class="world-edition">A SMALL WORLD / A PLAYABLE PORTFOLIO</span>
+    </div>
+  </section>
+
+  <section
+    class="atlas-frame"
+    aria-label="Interactive world map with four career destinations"
+  >
+    <div class="atlas-topline">
+      <span>
+        <i></i> CAREER WORLD / 01
+      </span>
+      <button data-world-motion aria-pressed="false">
+        Ⅱ Pause motion
+      </button>
+    </div>
+    <div class="game-screen">
+      <canvas
+        id="career-game"
+        width="640"
+        height="384"
+        tabindex="0"
+        aria-label="Playable career world. Arrow keys or WASD to walk; E or Enter at a door opens career details. Click buildings to walk or fly to them. Use the journey buttons below as an alternative."
+      ></canvas>
+    </div>
+    <div class="game-dialogue">
+      <span class="game-portrait" aria-hidden="true">
+        R
+      </span>
+      <div>
+        <span data-game-region>MICHIGAN / ANN ARBOR</span>
+        <p data-game-status role="status">
+          Welcome to Michigan. Walk up to a door to discover the work.
+        </p>
+      </div>
+      <span data-world-visited>0 / 4 explored</span>
+    </div>
+    <div class="game-deck">
+      <div class="game-key-help">
+        <kbd>WASD</kbd> / <kbd>↑ ↓ ← →</kbd> Walk <kbd>E</kbd> Enter
+      </div>
+      <div class="game-view-actions">
+        <button data-game-home>World map</button>
+        <button data-game-zoom>Zoom in +</button>
+      </div>
+      <div class="game-pad" aria-label="Movement controls">
+        <button data-game-move="arrowup" aria-label="Walk north">
+          ↑
+        </button>
+        <button data-game-move="arrowleft" aria-label="Walk west">
+          ←
+        </button>
+        <button data-game-move="arrowdown" aria-label="Walk south">
+          ↓
+        </button>
+        <button data-game-move="arrowright" aria-label="Walk east">
+          →
+        </button>
+      </div>
+      <button
+        class="game-a-button"
+        data-game-enter
+        aria-label="Enter nearby destination"
+      >
+        A
+      </button>
+    </div>
+  </section>
+
+  <section class="world-journey" aria-label="Clickable career journey">
+    <div class="journey-heading">
+      <h2>The journey so far</h2>
+      <span>FOLLOW THE STORY, OR CHOOSE YOUR OWN STOP</span>
+    </div>
+    <ol>
+      {travelChapters.map((s, i) => (
+        <li>
+          <button data-world-stop={i} data-stop-destination={s.destination}>
+            <span class="journey-dot">{String(i + 1).padStart(2, '0')}</span>
+            <span class="journey-place">{s.name}</span>
+            <strong>{s.label}</strong>
+            <small>{s.sub}</small>
+          </button>
+        </li>
+      ))}
+    </ol>
+    <p class="journey-footnote">
+      EDAG terms and university studies overlapped. Quantum is freelance work
+      alongside SMT.
+    </p>
+  </section>
+  <footer class="world-footer">
+    <span>Made of curiosity, code, and a few plane tickets.</span>
+    <a href="/classic/">Prefer the full written portfolio? ↗</a>
+  </footer>
+
+  <dialog class="career-dialog" aria-labelledby="career-dialog-title">
+    <div class="career-dialog-top">
+      <span data-world-dialog-location></span>
+      <button data-world-close aria-label="Close career details">
+        Back to the world <span>×</span>
+      </button>
+    </div>
+    <div class="career-dialog-scroll">
+      <div class="career-detail-hero">
+        <div class="detail-scene">
+          <div class="scene-grid" aria-hidden="true"></div>
+          <canvas
+            class="detail-pixel-scene"
+            data-world-detail-art
+            width="160"
+            height="104"
+            role="img"
+          ></canvas>
+          <div class="scene-spark spark-one" aria-hidden="true">
+            ✦
+          </div>
+          <div class="scene-spark spark-two" aria-hidden="true">
+            ✧
+          </div>
+          <span class="scene-caption" data-world-scene-caption></span>
+        </div>
+        <div class="detail-intro">
+          <p class="world-eyebrow" data-world-detail-label></p>
+          <h2 id="career-dialog-title"></h2>
+          <p class="detail-role" data-world-detail-role></p>
+          <p data-world-detail-intro></p>
+          <div class="detail-tags" data-world-tags></div>
+        </div>
+      </div>
+      <div class="detail-facts">
+        <div>
+          <strong data-world-stat></strong>
+          <span data-world-stat-label></span>
+        </div>
+        <p data-world-detail-note></p>
+      </div>
+      <div class="work-showcase" data-work-showcase>
+        <div>
+          <span class="world-eyebrow">A LITTLE WINDOW INTO THE WORK</span>
+          <h3 data-work-demo-title></h3>
+          <p data-work-demo-copy></p>
+          <button data-work-demo-action class="world-demo-button"></button>
+          <span class="demo-disclaimer">
+            Illustrative animation of the work
+          </span>
+        </div>
+        <div class="mini-display" data-mini-display>
+          <div class="display-chrome">
+            <span>● ● ●</span>
+            <small data-work-display-label></small>
+            <i></i>
+          </div>
+          <div class="work-visual work-visual-smt">
+            <svg viewBox="0 0 400 180" aria-hidden="true">
+              <rect width="400" height="180" fill="#265c48" />
+              <path
+                d="M0 30H400 M0 150H400 M45 30V150 M90 30V150 M135 30V150 M180 30V150 M225 30V150 M270 30V150 M315 30V150 M360 30V150"
+                stroke="#75a087"
+                stroke-width="2"
+              />
+              <path
+                d="M330 60V110 M310 60H350 M310 35V60 M350 35V60"
+                fill="none"
+                stroke="#ffe9a2"
+                stroke-width="4"
+              />
+              <path
+                class="kick-arc"
+                d="M65 130Q160 -28 330 76"
+                fill="none"
+                stroke="#f9c756"
+                stroke-width="4"
+                stroke-dasharray="7 5"
+              />
+              <circle class="kick-ball" r="5" fill="#fff4d7" />
+              <rect x="15" y="156" width="185" height="18" fill="#152f2a" />
+              <text
+                x="24"
+                y="169"
+                fill="#ffe9a2"
+                font-size="10"
+                font-family="monospace"
+              >
+                LIVE · TRAJECTORY RENDERED
+              </text>
+            </svg>
+          </div>
+          <div class="work-visual work-visual-edag">
+            <div class="vehicle-gauges">
+              <div>
+                <strong data-demo-speed>64</strong>
+                <small>KM/H</small>
+              </div>
+              <div>
+                <strong>2.4</strong>
+                <small>RPM × 1000</small>
+              </div>
+            </div>
+            <div class="can-signal">
+              <span>CAN</span>
+              <i></i>
+              <i></i>
+              <i></i>
+              <span>QML DISPLAY</span>
+            </div>
+            <div class="flash-progress">
+              <span></span>
+            </div>
+            <small class="vehicle-status" data-vehicle-status>
+              LIVE VEHICLE SIGNAL
+            </small>
+          </div>
+          <div class="work-visual work-visual-quantum">
+            <div class="home-wireframe">
+              <svg viewBox="0 0 400 180" aria-hidden="true">
+                <g fill="#58afa126" stroke="#90d6bc" stroke-width="2">
+                  <path d="M125 80L210 37L287 76L202 121Z M125 80V133L202 173V121 M202 173L287 130V76 M202 121L210 37 M113 85L210 21L300 77 M153 99V124L178 136V111Z M226 110V152L248 141V99Z M259 94V114L278 104V85Z" />
+                </g>
+                <path
+                  d="M55 138L203 63L355 139 M85 153L233 78 M115 168L263 93"
+                  stroke="#89baa029"
+                  fill="none"
+                />
+                <g fill="#f5ca6c">
+                  <rect x="204" y="34" width="6" height="6" />
+                  <rect x="199" y="118" width="6" height="6" />
+                </g>
+              </svg>
+            </div>
+            <span class="home-mode" data-home-mode>
+              HOME 01 / SPATIAL VIEW
+            </span>
+          </div>
+          <div class="work-visual work-visual-uofm">
+            <span class="maize-m">M</span>
+            <span class="graduation-spark">✦</span>
+            <strong>CLASS OF 2024</strong>
+            <small>B.S. COMPUTER SCIENCE</small>
+          </div>
+        </div>
+      </div>
+      <section class="detail-projects">
+        <div class="projects-title">
+          <span class="world-eyebrow">WHAT I WORKED ON</span>
+          <span data-world-project-count></span>
+        </div>
+        <div data-world-projects></div>
+      </section>
+      <div class="detail-next">
+        <span>There’s more on the map.</span>
+        <button data-world-next>Next destination →</button>
+      </div>
+    </div>
+  </dialog>
+  <nav class="world-review" aria-label="Prototype review">
+    <a href="/explore/?variant=6">← Other prototypes</a>
+    <span>
+      <i></i> OPTION 07 · CAREER WORLD
+    </span>
+    <a href="/classic/">Written portfolio ↗</a>
+  </nav>
+</main>

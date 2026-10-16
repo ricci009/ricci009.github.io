@@ -1,0 +1,259 @@
+---
+// Smooth, weighted kernels illustrate synthetic activity, not match statistics.
+const clusters = [
+  {
+    id: 'wide',
+    label: 'Wide play',
+    centers: [
+      [0.24, 0.22, 12],
+      [0.43, 0.19, 18],
+      [0.59, 0.28, 12],
+      [0.73, 0.18, 22],
+      [0.79, 0.38, 18],
+      [0.63, 0.55, 10],
+      [0.45, 0.48, 8],
+    ],
+  },
+  {
+    id: 'central',
+    label: 'Central play',
+    centers: [
+      [0.33, 0.43, 16],
+      [0.49, 0.34, 16],
+      [0.55, 0.57, 24],
+      [0.69, 0.47, 18],
+      [0.42, 0.72, 12],
+      [0.76, 0.68, 8],
+      [0.62, 0.22, 6],
+    ],
+  },
+];
+const colors = [
+  '#183941',
+  '#195a65',
+  '#168799',
+  '#1cb7bd',
+  '#62d5b1',
+  '#b1df85',
+  '#e4dd54',
+  '#f5be3d',
+  '#f39630',
+  '#ec6928',
+  '#e34427',
+  '#c92c2d',
+];
+const fields = clusters;
+// SVG interpolates both the density kernels and the color ramp continuously.
+// No square cells or discrete color bands are rendered.
+const channels = [1, 3, 5].map((offset) =>
+  colors.map((color) => (parseInt(color.slice(offset, offset + 2), 16) / 255).toFixed(4)).join(' '),
+);
+const kernelStops = Array.from({ length: 21 }, (_, index) => ({
+  offset: index / 20,
+  opacity: index === 20 ? 0 : Math.exp(-4.5 * (index / 20) ** 2),
+}));
+---
+
+<figure class="heatmap" data-soccer-heatmap>
+  <div class="figure-label">
+    <span>WORLD CUP / PLAYER ACTIVITY</span>
+    <span>ILLUSTRATION</span>
+  </div>
+  <svg
+    viewBox="-20 -20 640 420"
+    role="img"
+    aria-labelledby="soccer-title soccer-desc"
+  >
+    <title id="soccer-title">Soccer activity heatmap</title>
+    <desc id="soccer-desc">
+      Localized concentrations of illustrative player positions, shown from blue
+      through yellow to red. Wide play is selected. This is synthetic data.
+    </desc>
+    <defs>
+      <clipPath id="soccer-field">
+        <rect width="600" height="380" />
+      </clipPath>
+      <radialGradient id="soccer-density">
+        {kernelStops.map((stop) => <stop offset={stop.offset} stop-color="white" stop-opacity={stop.opacity} />)}
+      </radialGradient>
+      <linearGradient id="soccer-turf" x2="0" y2="1">
+        <stop stop-color="#142930" />
+        <stop offset="1" stop-color="#0d2026" />
+      </linearGradient>
+      <filter id="soccer-colorize" x="0" y="0" width="600" height="380" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 1 0" />
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues={channels[0]} />
+          <feFuncG type="table" tableValues={channels[1]} />
+          <feFuncB type="table" tableValues={channels[2]} />
+          <feFuncA type="table" tableValues="0 0.65 0.95 1 1 1 1 1 1 1 1 1" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+    <rect x="-20" y="-20" width="640" height="420" fill="#121f23" />
+    <rect width="600" height="380" fill="url(#soccer-turf)" />
+    <g clip-path="url(#soccer-field)">
+      {fields.map((field, index) => (
+        <g
+          data-heatmap-profile={field.id}
+          style={index === 0 ? '' : 'display:none'}
+          filter="url(#soccer-colorize)"
+        >
+          {field.centers.map(([x = 0, y = 0, weight = 0]) => (
+            <ellipse cx={x * 600} cy={y * 380} rx="98" ry="80" fill="url(#soccer-density)" opacity={0.98 * weight / 24} />
+          ))}
+        </g>
+      ))}
+    </g>
+    <g fill="none" stroke="#c1d5d8" stroke-opacity="0.65" stroke-width="1.6" stroke-linejoin="round">
+      <rect width="600" height="380" />
+      <path d="M300 0V380" />
+      <circle cx="300" cy="190" r="52" />
+      <path d="M0 80H95V300H0 M600 80H505V300H600 M0 140H33V240H0 M600 140H567V240H600 M95 149A52 52 0 0 1 95 231 M505 149A52 52 0 0 0 505 231 M0 167H-10V213H0 M600 167H610V213H600" />
+    </g>
+    <g fill="#b3c5c9">
+      <circle cx="300" cy="190" r="2" />
+      <circle cx="65" cy="190" r="2" />
+      <circle cx="535" cy="190" r="2" />
+    </g>
+  </svg>
+  <div class="heatmap-tools">
+    <div
+      class="switch"
+      role="group"
+      aria-label="Example activity pattern"
+      data-heatmap-controls
+      hidden
+    >
+      {fields.map((field, index) => (
+        <button
+          type="button"
+          data-profile={field.id}
+          aria-pressed={index === 0}
+        >
+          {field.label}
+        </button>
+      ))}
+    </div>
+    <div class="legend">
+      <span>Less</span>
+      <span class="ramp"></span>
+      <span>More</span>
+    </div>
+  </div>
+  <figcaption>
+    Illustrative positions and relative activity; not World Cup match data.
+  </figcaption>
+</figure>
+<script>
+  const map = document.querySelector<HTMLElement>('[data-soccer-heatmap]');
+  if (map) {
+    map.querySelector('[data-heatmap-controls]')?.removeAttribute('hidden');
+    map
+      .querySelectorAll<HTMLButtonElement>('[data-profile]')
+      .forEach((button) =>
+        button.addEventListener('click', () => {
+          map
+            .querySelectorAll<SVGElement>('[data-heatmap-profile]')
+            .forEach((group) => {
+              group.style.display =
+                group.dataset.heatmapProfile === button.dataset.profile
+                  ? ''
+                  : 'none';
+            });
+          map
+            .querySelectorAll('[data-profile]')
+            .forEach((option) =>
+              option.setAttribute('aria-pressed', String(option === button)),
+            );
+          map.querySelector('#soccer-desc')!.textContent =
+            `Localized concentrations of illustrative player positions, shown from blue through yellow to red. ${button.textContent} is selected. This is synthetic data.`;
+        }),
+      );
+  }
+</script>
+<style>
+  .heatmap {
+    margin: 0;
+  }
+  .figure-label {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    color: #97b6bf;
+    margin-bottom: 12px;
+  }
+  .figure-label span:last-child {
+    color: #8c969e;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #304047;
+    border-radius: 4px;
+    shape-rendering: geometricPrecision;
+    image-rendering: auto;
+  }
+  .heatmap-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .switch {
+    display: flex;
+    gap: 6px;
+  }
+  .switch[hidden] {
+    display: none;
+  }
+  button {
+    border: 1px solid #3e5259;
+    background: transparent;
+    color: #a8bec5;
+    font: inherit;
+    font-size: 10px;
+    min-height: 36px;
+    padding: 8px 10px;
+  }
+  button[aria-pressed='true'] {
+    background: #b9dbe1;
+    color: #0b1b20;
+    border-color: #b9dbe1;
+  }
+  button:focus-visible {
+    outline: 2px solid #e9bb7d;
+    outline-offset: 3px;
+  }
+  .legend {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    font-size: 9px;
+    color: #a7b8bd;
+  }
+  .ramp {
+    display: block;
+    width: 75px;
+    height: 5px;
+    background: linear-gradient(
+      90deg,
+      #195a65,
+      #1cb7bd,
+      #b1df85,
+      #f5be3d,
+      #c92c2d
+    );
+  }
+  figcaption {
+    color: #929da6;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+</style>

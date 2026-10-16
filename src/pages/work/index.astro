@@ -1,0 +1,59 @@
+---
+import Layout from '../../layouts/PortfolioLayout.astro';
+import { work } from '../../data/portfolio';
+---
+
+<Layout
+  title="Selected work — Riccardo Salzmann"
+  description="Explore Riccardo’s work in live sports graphics, interactive 3D, embedded systems, and open source."
+>
+  <div class="content-shell">
+    <header class="content-header">
+      <p class="kicker">RICCARDO@WORKBENCH:~$ LS WORK</p>
+      <h1>
+        Different contexts.
+        <br />
+        <span>The same curiosity.</span>
+      </h1>
+      <p class="lede">
+        Live sports broadcasts, interactive homes, and the systems inside a
+        vehicle. Here’s the work behind the objects on the desk.
+      </p>
+      <a class="text-link" href="/">
+        ← Explore the interactive desk
+      </a>
+    </header>
+    <div class="work-grid">
+      {work.map((section, i) => (
+        <a
+          class="work-card"
+          href={`/work/${section.id}/`}
+          style={`--accent:${section.accent}`}
+        >
+          <div class="card-top">
+            <span>
+              0{i + 1} / {section.category}
+            </span>
+            <span>↗</span>
+          </div>
+          <h2>{section.name}</h2>
+          <p class="card-role">{section.role}</p>
+          <p>{section.heading}</p>
+          <div class="card-bottom">
+            <span>{section.dates}</span>
+            <span>→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div class="story-footer">
+      <div>
+        <h2>A little context about me.</h2>
+        <p>The person, the skills, and the interests around the work.</p>
+      </div>
+      <a class="site-button" href="/about/">
+        About Riccardo →
+      </a>
+    </div>
+  </div>
+</Layout>

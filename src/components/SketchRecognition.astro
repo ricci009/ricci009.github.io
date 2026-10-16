@@ -1,0 +1,154 @@
+---
+type Point = [number, number];
+interface Example {
+  id: string;
+  label: string;
+  rough: string;
+  edges: string[];
+  corners: Point[];
+  ends: Point[];
+  bends: Point[];
+  note: string;
+}
+const examples: Example[] = [
+  {
+    id: 'polyline', label: 'Polyline',
+    rough: 'M28 163L43 149L51 138L68 123L78 108L86 99L95 107L107 119L119 128L131 141L144 126L151 110L165 95L174 76L189 60L201 41',
+    edges: ['M28 163L87 99', 'M87 99L131 141', 'M131 141L201 41'],
+    corners: [[87,99],[131,141]], ends: [[28,163],[201,41]], bends: [],
+    note: 'Split at sharp turns: three straight edges meet at two preserved corners.',
+  },
+  {
+    id: 'line', label: 'Line',
+    rough: 'M27 153L44 146L60 139L75 136L90 123L105 121L120 109L135 106L150 93L165 89L182 78L202 70',
+    edges: ['M27 153L202 70'], corners: [], ends: [[27,153],[202,70]], bends: [],
+    note: 'Fit a single edge through small hand movements, keeping the two endpoints.',
+  },
+  {
+    id: 'curve', label: 'Complex curve',
+    rough: 'M25 151C27 135 25 108 34 90C39 75 50 65 63 65C83 65 89 88 97 103C102 116 106 133 119 141C135 149 146 143 155 132C169 118 162 99 174 78C181 59 195 53 205 50',
+    edges: ['M25 151C25 55 70 35 96 103', 'M96 103C122 171 162 154 166 111', 'M166 111C170 68 187 50 205 50'],
+    corners: [], ends: [[25,151],[205,50]], bends: [[96,103],[166,111]],
+    note: 'Follow changing curvature through an S-shaped stroke, preserving smooth joins instead of introducing corners.',
+  },
+  {
+    id: 'rectangle', label: 'Rectangle',
+    rough: 'M39 54L72 51L101 55L137 51L168 54L191 52L188 81L192 111L188 141L191 157L157 160L121 156L84 160L41 158L38 133L42 102L39 77L39 54',
+    edges: ['M40 54H190', 'M190 54V158', 'M190 158H40', 'M40 158V54'],
+    corners: [[40,54],[190,54],[190,158],[40,158]], ends: [], bends: [],
+    note: 'Four fitted edges close into a rectangle; corner markers make the right-angle structure visible.',
+  },
+  {
+    id: 'triangle', label: 'Triangle',
+    rough: 'M31 162L49 133L63 113L76 89L95 63L110 41L123 53L136 78L150 98L164 120L180 141L201 161L164 159L130 163L95 160L63 164L31 162',
+    edges: ['M30 162L110 42', 'M110 42L200 162', 'M200 162H30'],
+    corners: [[30,162],[110,42],[200,162]], ends: [], bends: [],
+    note: 'A closed polyline retains its three corners and connected edges rather than becoming a rounded shape.',
+  },
+  {
+    id: 'ellipse', label: 'Ellipse',
+    rough: 'M30 106C27 79 53 59 82 57C110 49 146 55 171 67C194 76 203 91 201 111C204 130 178 149 147 154C114 164 78 155 54 143C37 134 27 122 30 106Z',
+    edges: ['M30 106A85 51 0 1 1 200 106A85 51 0 1 1 30 106Z'],
+    corners: [], ends: [], bends: [],
+    note: 'Fit a continuous closed curve. No sharp corners are added to a smooth outline.',
+  },
+];
+---
+
+<figure class="sketch" data-sketch-recognition>
+  <div class="figure-label"><span>STROKE BEAUTIFICATION</span><span>ILLUSTRATIVE EXAMPLES</span></div>
+  <div class="shape-controls" role="group" aria-label="Stroke shape" data-sketch-controls hidden>
+    {examples.map((example, index) => (
+      <button type="button" data-shape={example.id} aria-pressed={index === 0}>{example.label}</button>
+    ))}
+  </div>
+  {examples.map((example, index) => (
+    <div data-sketch-example={example.id} hidden={index !== 0}>
+      <svg viewBox="0 0 520 270" role="img" aria-labelledby={`sketch-${example.id}-title sketch-${example.id}-desc`}>
+        <title id={`sketch-${example.id}-title`}>{example.label}: freehand input and refined geometry</title>
+        <desc id={`sketch-${example.id}-desc`}>{example.note} Colored lines identify fitted edges; gold circles mark corners, white rings mark endpoints, and violet diamonds mark changes in curvature.</desc>
+        <path class="divider" d="M260 44V245" />
+        <text x="20" y="29">FREEHAND INPUT</text>
+        <text x="280" y="29">REFINED GEOMETRY</text>
+        <g transform="translate(12 49)">
+          <path class="raw" d={example.rough} />
+          <g class="features detected">
+            {example.corners.map(([x,y]) => <circle class="corner-halo" cx={x} cy={y} r="11" />)}
+          </g>
+        </g>
+        <g transform="translate(272 49)">
+          <path class="ghost" d={example.rough} />
+          {example.edges.map((edge, i) => <path class="edge" d={edge} stroke={['#8be3eb','#8fe0af','#b1bdff','#8fe0af'][i % 4]} />)}
+          <g class="features">
+            {example.corners.map(([x,y]) => <circle class="corner" cx={x} cy={y} r="4.5" />)}
+            {example.ends.map(([x,y]) => <circle class="endpoint" cx={x} cy={y} r="4" />)}
+            {example.bends.map(([x,y]) => <path class="bend" d={`M${x} ${y-6}l6 6-6 6-6-6Z`} />)}
+          </g>
+        </g>
+        <text class="panel-foot" x="20" y="250">Original stroke</text>
+        <text class="panel-foot" x="280" y="250">{example.corners.length ? `${example.edges.length} edges / ${example.corners.length} corners` : example.bends.length ? 'Smooth curve segments' : example.ends.length ? '1 edge / 2 endpoints' : 'Continuous closed curve'}</text>
+      </svg>
+      <p class="example-note">{example.note}</p>
+    </div>
+  ))}
+  <div class="legend" aria-label="Geometry feature legend">
+    <span><i class="line-key"></i>Edge / curve</span>
+    <span><i class="corner-key"></i>Corner</span>
+    <span><i class="end-key"></i>Endpoint</span>
+    <span><i class="bend-key"></i>Curvature change</span>
+  </div>
+  <label class="feature-toggle" data-sketch-controls hidden><input type="checkbox" checked /> Highlight features</label>
+  <figcaption>Illustrations of stroke analysis and cleanup, not a live recognition engine.</figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-sketch-recognition]').forEach((figure) => {
+    figure.querySelectorAll('[data-sketch-controls]').forEach((control) => control.removeAttribute('hidden'));
+    figure.querySelectorAll<HTMLButtonElement>('[data-shape]').forEach((button) => {
+      button.addEventListener('click', () => {
+        figure.querySelectorAll<HTMLElement>('[data-sketch-example]').forEach((panel) => {
+          panel.hidden = panel.dataset.sketchExample !== button.dataset.shape;
+        });
+        figure.querySelectorAll('[data-shape]').forEach((option) => option.setAttribute('aria-pressed', String(option === button)));
+      });
+    });
+    figure.querySelector<HTMLInputElement>('input')?.addEventListener('change', (event) => {
+      figure.classList.toggle('hide-features', !(event.currentTarget as HTMLInputElement).checked);
+    });
+  });
+</script>
+
+<style>
+  .sketch { margin: 0; }
+  .figure-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 9px; letter-spacing: .5px; color: #97b6bf; margin-bottom: 12px; }
+  .figure-label span:last-child { color: #8c969e; }
+  .shape-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  [hidden] { display: none !important; }
+  button { border: 1px solid #3e5259; background: transparent; color: #b4c7ce; font: inherit; font-size: 10px; min-height: 36px; padding: 8px 10px; cursor: pointer; }
+  button[aria-pressed='true'] { background: #b9dbe1; color: #0b1b20; border-color: #b9dbe1; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #e9bb7d; outline-offset: 3px; }
+  svg { display: block; width: 100%; height: auto; border: 1px solid #304047; background: #0b151b; }
+  svg text { fill: #a7bdc6; font: 12px Consolas, monospace; letter-spacing: .5px; }
+  svg .panel-foot { font-size: 11px; fill: #8399a4; letter-spacing: 0; }
+  .divider { stroke: #2a3a44; stroke-dasharray: 3 6; }
+  .raw, .ghost, .edge { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .raw { stroke: #a2aab7; stroke-width: 2.3; }
+  .ghost { stroke: #7c899c; stroke-width: 2; opacity: .24; }
+  .edge { stroke-width: 3; }
+  .corner-halo { fill: #e9bb7d20; stroke: #e9bb7d; stroke-width: 1; stroke-dasharray: 2 3; }
+  .corner { fill: #e9bb7d; stroke: #0b151b; stroke-width: 1.5; }
+  .endpoint { fill: #0b151b; stroke: #e5edf0; stroke-width: 2; }
+  .bend { fill: #c3a6ed; stroke: #0b151b; stroke-width: 1.5; }
+  .hide-features .features { visibility: hidden; }
+  .example-note { min-height: 5.1em; margin: 12px 0; font-size: 11px; line-height: 1.7; color: #b9c7ce; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; color: #99aab5; font-size: 9px; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend i { display: inline-block; width: 7px; height: 7px; flex-shrink: 0; }
+  .legend .line-key { width: 14px; height: 2px; background: #8be3eb; }
+  .corner-key { border-radius: 50%; background: #e9bb7d; }
+  .end-key { border-radius: 50%; border: 1px solid #e5edf0; }
+  .bend-key { background: #c3a6ed; transform: rotate(45deg); }
+  .feature-toggle { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #b4c7ce; min-height: 40px; margin-top: 6px; cursor: pointer; }
+  input { accent-color: #b9dbe1; }
+  figcaption { font-size: 10px; line-height: 1.7; color: #8c969e; margin-top: 8px; }
+</style>

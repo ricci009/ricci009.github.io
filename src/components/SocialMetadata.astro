@@ -1,0 +1,23 @@
+---
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+// Never advertise localhost as the public URL when a domain has not been chosen.
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const image = Astro.site ? new URL('/social-card.png', Astro.site).href : '/social-card.png';
+---
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Riccardo Salzmann" />
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Riccardo Salzmann — A desk full of possibilities. Software engineering, graphics, systems, and interactive worlds." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+{canonical && <link rel="canonical" href={canonical} />}
+{canonical && <meta property="og:url" content={canonical} />}
+{Astro.site && <link rel="sitemap" href="/sitemap-index.xml" />}

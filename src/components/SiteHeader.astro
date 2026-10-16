@@ -1,0 +1,46 @@
+---
+import { profile } from '../data/portfolio';
+import PenguinMark from './PenguinMark.astro';
+const path = Astro.url.pathname;
+---
+
+<header class="site-nav">
+  <a class="site-brand" href="/" aria-label="Riccardo Salzmann — Home">
+    <PenguinMark />
+    <span>
+      Riccardo Salzmann<small>SOFTWARE ENGINEER</small>
+    </span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href="/" aria-current={path === '/' ? 'page' : undefined}>
+      The desk
+    </a>
+    <a
+      href="/work/"
+      aria-current={path.startsWith('/work') ? 'page' : undefined}
+    >
+      Work
+    </a>
+    <a
+      href="/about/"
+      aria-current={path.startsWith('/about') ? 'page' : undefined}
+    >
+      About
+    </a>
+    <a
+      href="/journal/"
+      aria-current={path.startsWith('/journal') ? 'page' : undefined}
+    >
+      Journal
+    </a>
+    <a
+      href="/resume/"
+      aria-current={path.startsWith('/resume') ? 'page' : undefined}
+    >
+      Résumé
+    </a>
+    <a class="nav-contact" href={`mailto:${profile.email}`}>
+      Say hello ↗
+    </a>
+  </nav>
+</header>

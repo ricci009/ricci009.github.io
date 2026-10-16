@@ -1,0 +1,140 @@
+---
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-sans/600.css';
+import '@fontsource/lora/400.css';
+import '@fontsource/lora/400-italic.css';
+import '@fontsource/pixelify-sans/400.css';
+import '../styles/global.css';
+import '../styles/readability.css';
+import Icon from '../components/Icon.astro';
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'Riccardo Salzmann — A journey through code',
+  description = 'Software engineer, curious builder, and soccer coach. Explore my work in live sports graphics, automotive systems, and interactive experiences.',
+} = Astro.props;
+const onJournal = Astro.url.pathname.startsWith('/journal');
+const homePath = Astro.url.pathname.startsWith('/classic') ? '/classic/' : '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f3e9" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <script is:inline>
+      try {
+        if (localStorage.getItem('quiet-world') === 'true')
+          document.documentElement.dataset.quiet = 'true';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href={homePath} aria-label="Riccardo Salzmann home">
+          <span class="monogram" aria-hidden="true">
+            rs<span>✦</span>
+          </span>
+          <span>
+            Riccardo Salzmann
+            <span class="wordmark-sub">ENGINEER & CURIOUS HUMAN</span>
+          </span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a class:list={{ selected: !onJournal }} href={`${homePath}#journey`}>
+            The journey
+          </a>
+          <a
+            class:list={{ selected: onJournal }}
+            aria-current={onJournal ? 'page' : undefined}
+            href="/journal/"
+          >
+            Field journal
+          </a>
+          <a href={`${homePath}#about`}>About</a>
+        </nav>
+        <a class="header-contact" href="mailto:salzmanr@umich.edu">
+          Say hello <Icon name="arrow" />
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div>
+          <p class="eyebrow">THE NEXT CHAPTER</p>
+          <h2>
+            Good things start
+            <br />
+            with a <em>hello.</em>
+          </h2>
+        </div>
+        <div class="footer-message">
+          <p>
+            Have an interesting problem, a project in mind,
+            <br class="desktop-only" /> or a story to swap? I’d love to hear it.
+          </p>
+          <a class="email-link" href="mailto:salzmanr@umich.edu">
+            salzmanr@umich.edu <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© {new Date().getFullYear()} Riccardo Salzmann</p>
+        <p class="pixel-note">Always a little more to explore.</p>
+        <button class="motion-toggle" type="button" aria-pressed="false">
+          <span class="motion-dot"></span>
+          <span data-motion-label>Animation on</span>
+        </button>
+        <a href="#main" class="back-top">
+          Back to top ↑
+        </a>
+      </div>
+    </footer>
+    <script>
+      const toggle =
+        document.querySelector<HTMLButtonElement>('.motion-toggle');
+      const preference = matchMedia('(prefers-reduced-motion: reduce)');
+      const updateLabel = () => {
+        const quiet =
+          document.documentElement.dataset.quiet === 'true' ||
+          preference.matches;
+        toggle?.setAttribute('aria-pressed', String(quiet));
+        if (toggle) {
+          toggle.disabled = preference.matches;
+          toggle.title = preference.matches
+            ? 'Animation is disabled by your device’s reduced-motion preference.'
+            : '';
+        }
+        const label = toggle?.querySelector('[data-motion-label]');
+        if (label) label.textContent = quiet ? 'Animation off' : 'Animation on';
+      };
+      toggle?.addEventListener('click', () => {
+        const quiet = document.documentElement.dataset.quiet !== 'true';
+        document.documentElement.dataset.quiet = String(quiet);
+        try {
+          localStorage.setItem('quiet-world', String(quiet));
+        } catch {}
+        updateLabel();
+      });
+      preference.addEventListener('change', updateLabel);
+      updateLabel();
+    </script>
+  </body>
+</html>

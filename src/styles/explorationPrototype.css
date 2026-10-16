@@ -1,0 +1,1463 @@
+:root {
+  --ink: #253f35;
+  --muted: #677866;
+  --paper: #f7f5e9;
+  --edge: #c9d1b8;
+  --green: #326f52;
+  --accent: #b9573d;
+  background: #eff1e3;
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible,
+canvas:focus-visible {
+  outline: 3px solid #b95f43;
+  outline-offset: 3px;
+}
+button:hover {
+  filter: brightness(0.94);
+}
+h1,
+h2,
+p {
+  margin: 0;
+}
+h1,
+h2 {
+  font-weight: 400;
+}
+p {
+  line-height: 1.65;
+}
+[hidden] {
+  display: none !important;
+}
+.micro {
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+.explore-header {
+  height: 84px;
+  margin: 0 3.5%;
+  border-bottom: 1px solid var(--edge);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.explore-brand {
+  display: flex;
+  gap: 12px;
+  font: 17px 'Pixelify Sans';
+  letter-spacing: 1px;
+}
+.explore-brand small {
+  display: block;
+  font: 7px 'DM Sans';
+  letter-spacing: 1.8px;
+  margin-top: 5px;
+}
+.brand-sprite {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 38px;
+  background: var(--green);
+  color: #fff4cb;
+  font: 32px 'Pixelify Sans';
+  box-shadow: 3px 3px #b4c299;
+}
+.explore-header nav {
+  display: flex;
+  gap: 24px;
+  font-size: 11px;
+  align-items: center;
+}
+.explore-header nav button {
+  border: 1px solid var(--edge);
+  padding: 8px 12px;
+  font-size: 10px;
+}
+.explore-header nav button span {
+  margin-left: 12px;
+}
+.adventure-shell {
+  max-width: 1650px;
+  margin: auto;
+  padding: 30px 3.5% 120px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 24px;
+}
+.intro-strip {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  gap: 55px;
+  padding-bottom: 4px;
+}
+.intro-strip h1 {
+  font: 36px/1.04 'Pixelify Sans';
+  letter-spacing: -0.5px;
+  margin-top: 8px;
+}
+.intro-strip h1 span {
+  color: #6d8560;
+}
+.intro-strip > p {
+  max-width: 270px;
+  font-size: 12px;
+  color: var(--muted);
+  border-left: 1px solid var(--edge);
+  padding-left: 25px;
+}
+.round-label {
+  font-size: 8px;
+  line-height: 1.8;
+  letter-spacing: 1.5px;
+  margin-left: auto;
+  text-align: right;
+  color: #78816b;
+}
+.round-label b {
+  font-weight: 400;
+  color: var(--ink);
+}
+.career-guide {
+  padding: 17px 0;
+  min-width: 0;
+}
+.guide-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--edge);
+}
+.career-guide h2 {
+  font: 24px/1.1 'Pixelify Sans';
+  margin-top: 20px;
+}
+.guide-intro {
+  font-size: 9px;
+  color: var(--muted);
+  margin: 12px 0 20px;
+}
+.career-stops {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.career-stops li {
+  position: relative;
+}
+.career-stops li:not(:last-child):before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 29px;
+  bottom: -6px;
+  width: 1px;
+  background: #bec9ac;
+}
+.career-stops button {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 7px 14px 0;
+  position: relative;
+}
+.stop-number {
+  font: 14px 'Pixelify Sans';
+  background: #eff1e3;
+  position: relative;
+  padding: 6px 3px;
+  color: #798c6a;
+}
+.career-stops strong {
+  font-size: 11px;
+  font-weight: 600;
+  display: block;
+}
+.career-stops small {
+  font-size: 8px;
+  display: block;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.stop-check {
+  margin-left: auto;
+  font-size: 13px;
+  color: #8aa174;
+}
+.career-stops [aria-current] {
+  color: var(--accent);
+}
+.career-stops [aria-current] .stop-number {
+  background: #dce6c8;
+  color: #395c45;
+  box-shadow: 2px 2px #b6c7a0;
+}
+.passport {
+  border-top: 1px solid var(--edge);
+  margin-top: 19px;
+  padding-top: 18px;
+}
+.passport > strong {
+  font-size: 11px;
+  display: block;
+  margin-top: 7px;
+  font-weight: 400;
+}
+.passport > strong b {
+  font-size: 17px;
+}
+.passport-stamps {
+  display: flex;
+  gap: 8px;
+  margin-top: 13px;
+}
+.passport-stamps span {
+  font: 14px 'Pixelify Sans';
+  border: 1px dashed #acba9a;
+  padding: 7px;
+  color: #a2b08f;
+}
+.passport-stamps .collected {
+  background: #dce6c8;
+  color: #43704c;
+  border: 1px solid #83a476;
+  transform: rotate(-6deg);
+}
+.passport p,
+.chronology-note {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.chronology-note {
+  font-size: 8px;
+  margin-top: 23px;
+}
+.play-section {
+  min-width: 0;
+  border: 1px solid #819976;
+  background: #d5e3b7;
+  box-shadow: 5px 6px #a5b68f25;
+  align-self: start;
+}
+.map-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f7f5e9;
+  color: #36513d;
+  border-bottom: 1px solid #98af83;
+  min-height: 42px;
+}
+.map-toolbar > div {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.back-button {
+  font-size: 10px;
+  border-right: 1px solid #bac8a6;
+  padding-right: 15px;
+}
+.map-mode {
+  font: 10px 'Pixelify Sans';
+  letter-spacing: 1px;
+}
+.map-stage {
+  position: relative;
+  background: #9cbc79;
+  overflow: hidden;
+  aspect-ratio: 1.6;
+}
+#adventure-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+.location-banner {
+  pointer-events: none;
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  background: #faf6dfee;
+  color: #2c4c37;
+  padding: 10px 16px;
+  border: 2px solid #466348;
+  box-shadow: 3px 3px #33503840;
+  max-width: 60%;
+}
+.location-banner > span {
+  display: block;
+  font-size: 6px;
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+}
+.location-banner strong {
+  font: 18px 'Pixelify Sans';
+  display: block;
+}
+.location-banner small {
+  display: block;
+  font-size: 7px;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.map-coordinates {
+  position: absolute;
+  bottom: 12px;
+  right: 13px;
+  background: #355340e8;
+  color: #e6efc4;
+  padding: 6px 10px;
+  font: 9px 'Pixelify Sans';
+  letter-spacing: 0.5px;
+}
+.map-coordinates > span:first-child {
+  color: #f2cc7c;
+  margin-right: 7px;
+}
+.map-watermark {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font-size: 6px;
+  letter-spacing: 1px;
+  color: #294d3c85;
+  pointer-events: none;
+}
+.game-message {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  background: #faf7e8;
+  border-top: 3px solid #4b684a;
+  padding: 18px;
+  min-height: 100px;
+}
+.game-message > div {
+  flex: 1;
+}
+.game-message p {
+  font-size: 12px;
+  margin-top: 5px;
+  line-height: 1.55;
+}
+.talking-sprite {
+  position: relative;
+  flex-shrink: 0;
+  width: 37px;
+  height: 44px;
+  background: #dce8c3;
+  border: 1px solid #a9b692;
+  image-rendering: pixelated;
+}
+.talking-sprite:before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  width: 15px;
+  height: 16px;
+  background: #e4b585;
+  box-shadow: 0 -4px #564d3a;
+}
+.talking-sprite:after {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: 8px;
+  width: 19px;
+  height: 16px;
+  background: #be694b;
+  box-shadow: 4px 0 #cf8855;
+}
+.talking-sprite i {
+  position: absolute;
+  z-index: 1;
+  left: 22px;
+  top: 14px;
+  width: 3px;
+  height: 3px;
+  background: #354638;
+}
+.primary-action {
+  background: #345d43;
+  color: #fff2cd;
+  padding: 13px 18px;
+  font: 12px 'Pixelify Sans';
+  box-shadow: 3px 3px #a3b38f;
+  white-space: nowrap;
+  border: 1px solid #284933;
+}
+.primary-action span {
+  margin-left: 10px;
+}
+.game-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  padding: 11px 13px;
+  background: #e4eacf;
+  font-size: 8px;
+  color: #5e7054;
+}
+.game-controls > span:nth-child(2) {
+  font-size: 7px;
+}
+.game-controls button {
+  font-size: 8px;
+  white-space: nowrap;
+}
+kbd {
+  font: 8px 'DM Sans';
+  border: 1px solid #a4b78b;
+  background: #f8f7e8;
+  padding: 2px 4px;
+  color: #344e38;
+  margin: 0 3px;
+}
+.field-guide {
+  display: none;
+  min-width: 0;
+  border: 1px solid var(--edge);
+  background: var(--paper);
+}
+.field-guide .guide-title {
+  padding: 15px;
+}
+.guide-preview {
+  background: #b1c887;
+}
+.guide-preview canvas {
+  width: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+.field-copy {
+  padding: 21px;
+}
+.field-copy h2 {
+  font: 28px/1.08 'Pixelify Sans';
+  margin: 9px 0;
+}
+.field-copy .role {
+  font-size: 10px;
+  margin: 12px 0;
+  color: #49684c;
+}
+.field-copy > p:not(.role) {
+  font-size: 11px;
+  color: var(--muted);
+}
+.destination-list {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.destination-list button {
+  text-align: left;
+  border: 1px solid #b8c8a1;
+  background: #ecf0d8;
+  padding: 11px 12px;
+  font: 11px 'Pixelify Sans';
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #39553c;
+}
+.destination-list button[aria-current] {
+  background: #d4e2b8;
+  border-color: #5e7e50;
+}
+.field-foot {
+  padding: 15px 20px;
+  border-top: 1px solid var(--edge);
+}
+.field-foot p {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.project-discovery {
+  grid-column: 2;
+  border: 1px solid #acbd95;
+  background: var(--paper);
+  scroll-margin-top: 20px;
+}
+.project-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid var(--edge);
+  padding: 14px 20px;
+}
+.project-metric {
+  font: 12px 'Pixelify Sans';
+  color: #8a613a;
+}
+.discovery-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+}
+.demo-box {
+  background: #dbe4c2;
+  min-width: 0;
+}
+.demo-box canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+}
+.demo-controls button {
+  background: #345d43;
+  padding: 9px 12px;
+  font: 11px 'Pixelify Sans';
+  color: #f7efcf;
+}
+.demo-controls span {
+  font-size: 8px;
+  color: #546c4c;
+}
+.discovery-layout article {
+  padding: 24px;
+}
+.discovery-layout h2 {
+  font: 25px/1.1 'Pixelify Sans';
+  margin: 10px 0 14px;
+}
+.discovery-layout article > p:not(.micro) {
+  font-size: 11px;
+  color: #596c53;
+}
+.discovery-layout .demo-note {
+  font-size: 8px !important;
+  border-top: 1px solid var(--edge);
+  padding-top: 12px;
+  margin-top: 18px;
+}
+.round-switcher {
+  position: fixed;
+  bottom: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #263e33;
+  color: #f5eed2;
+  padding: 11px 15px;
+  border-radius: 7px;
+  box-shadow: 0 6px 25px #142b3540;
+  border: 1px solid #97aa7755;
+}
+.round-switcher > button {
+  font-size: 19px;
+}
+.round-switcher > div > span {
+  display: block;
+  font-size: 6px;
+  letter-spacing: 1.4px;
+  color: #a5bd9c;
+  margin-bottom: 4px;
+}
+.round-switcher > div > span b {
+  font-weight: 400;
+  margin-left: 10px;
+}
+.round-switcher strong {
+  font-size: 11px;
+  white-space: nowrap;
+  min-width: 133px;
+  display: block;
+  font-weight: 400;
+}
+.round-one {
+  font-size: 8px;
+  color: #c2cbb1;
+  border-right: 1px solid #61785c;
+  padding-right: 16px;
+  white-space: nowrap;
+}
+.new-designs {
+  display: flex;
+  gap: 3px;
+}
+.new-designs button {
+  width: 25px;
+  height: 28px;
+  border: 1px solid #57714e;
+  font: 12px 'Pixelify Sans';
+  color: #baceac;
+}
+.new-designs [aria-current] {
+  background: #e3eabb;
+  color: #2e4837;
+  border-color: #e3eabb;
+}
+.touch-controls {
+  display: none;
+}
+.travel-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  background: #e9efcded;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #335c42;
+}
+.plane-icon {
+  font-size: 55px;
+  color: #bf7550;
+}
+.travel-overlay strong {
+  font: 28px 'Pixelify Sans';
+  margin: 13px;
+}
+.flight-line {
+  width: 160px;
+  border-top: 2px dashed #b28d5c;
+}
+.help-dialog {
+  max-width: 520px;
+  width: 90%;
+  padding: 38px;
+  border: 3px solid #4c6c49;
+  background: #f8f4df;
+  color: #2f4a37;
+}
+.help-dialog::backdrop {
+  background: #1e3a32bb;
+}
+.help-dialog > button:first-child {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  font-size: 25px;
+}
+.help-dialog h2 {
+  font: 30px 'Pixelify Sans';
+  margin: 12px 0 20px;
+}
+.help-dialog ol {
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.help-dialog li {
+  margin: 12px 0;
+}
+.help-dialog > p:last-of-type {
+  font-size: 11px;
+  margin-bottom: 22px;
+}
+.no-js {
+  padding: 30px;
+  background: white;
+}
+.no-js a {
+  text-decoration: underline;
+}
+/* 06: a region with a compact journey sidebar; entering reveals a field guide. */
+[data-exploration='6'][data-level='area'] .adventure-shell,
+[data-exploration='6'][data-level='interior'] .adventure-shell {
+  grid-template-columns: minmax(0, 1fr) 290px;
+}
+[data-exploration='6']:not([data-level='world']) .career-guide {
+  display: none;
+}
+[data-exploration='6']:not([data-level='world']) .field-guide {
+  display: block;
+}
+[data-exploration='6'] .project-discovery {
+  grid-column: 1/-1;
+}
+/* 07: uninterrupted story road, with the chapters running underneath the world. */
+[data-exploration='7'] {
+  background: #f5eddb;
+}
+[data-exploration='7'] .adventure-shell {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1300px;
+  gap: 18px;
+}
+[data-exploration='7'] .intro-strip {
+  order: 0;
+  justify-content: space-between;
+}
+[data-exploration='7'] .intro-strip h1 {
+  font-size: 41px;
+}
+[data-exploration='7'] .play-section {
+  order: 1;
+}
+[data-exploration='7'] .career-guide {
+  order: 2;
+  padding: 0;
+}
+[data-exploration='7'] .career-guide > .guide-title,
+[data-exploration='7'] .career-guide > h2,
+[data-exploration='7'] .guide-intro,
+[data-exploration='7'] .passport,
+[data-exploration='7'] .chronology-note {
+  display: none;
+}
+[data-exploration='7'] .career-stops {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid #cbbf9e;
+  background: #fffbeb;
+}
+[data-exploration='7'] .career-stops li:not(:last-child):before {
+  display: none;
+}
+[data-exploration='7'] .career-stops button {
+  padding: 15px 12px;
+}
+[data-exploration='7'] .career-stops li + li {
+  border-left: 1px solid #cbbf9e;
+}
+[data-exploration='7'] .stop-number {
+  background: #f5eddb;
+}
+[data-exploration='7'] .field-guide {
+  order: 3;
+  display: block;
+}
+[data-exploration='7'] .field-guide .guide-title,
+[data-exploration='7'] .guide-preview,
+[data-exploration='7'] .field-foot,
+[data-exploration='7'] .field-copy > p,
+[data-exploration='7'] .field-copy > h2,
+[data-exploration='7'] .field-copy > .micro {
+  display: none;
+}
+[data-exploration='7'] .field-copy {
+  padding: 12px;
+}
+[data-exploration='7'] .destination-list {
+  flex-direction: row;
+  margin: 0;
+}
+[data-exploration='7'] .destination-list button {
+  flex: 1;
+}
+[data-exploration='7'] .project-discovery {
+  order: 4;
+  grid-column: 1;
+}
+[data-exploration='7'] .map-stage {
+  max-height: 600px;
+  aspect-ratio: 1.9;
+}
+[data-exploration='7'] #adventure-map {
+  object-fit: contain;
+  background: #a3c378;
+}
+/* 08: a map-first town filling the screen with a small floating resident guide. */
+[data-exploration='8'] {
+  background: #d5e3bf;
+}
+[data-exploration='8'] .adventure-shell {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  padding-top: 18px;
+  gap: 16px;
+}
+[data-exploration='8'] .intro-strip {
+  display: none;
+}
+[data-exploration='8'] .career-guide {
+  display: none;
+}
+[data-exploration='8'] .field-guide {
+  display: block;
+}
+[data-exploration='8'] .play-section {
+  border: 3px solid #426747;
+  box-shadow: 6px 6px #779e6355;
+}
+[data-exploration='8'] .location-banner {
+  border: 0;
+  box-shadow: 4px 4px #4c69474d;
+}
+[data-exploration='8'] .map-stage {
+  min-height: 480px;
+}
+[data-exploration='8'] #adventure-map {
+  object-fit: cover;
+}
+[data-exploration='8'] .project-discovery {
+  grid-column: 1/-1;
+}
+[data-exploration='8'] .explore-header {
+  height: 68px;
+}
+/* 09: an atlas of islands with a passport panel on the left. */
+[data-exploration='9'] {
+  background: #dae9df;
+  --edge: #adc7b6;
+  --paper: #fbf6de;
+}
+[data-exploration='9'] .adventure-shell {
+  grid-template-columns: 255px minmax(0, 1fr);
+  gap: 24px;
+}
+[data-exploration='9'] .career-guide {
+  border: 1px solid #adbe99;
+  background: #fcf5df;
+  padding: 22px;
+  box-shadow: 5px 5px #567f6a20;
+}
+[data-exploration='9'] .career-guide h2 {
+  font-size: 30px;
+}
+[data-exploration='9'] .stop-number {
+  background: #fcf5df;
+}
+[data-exploration='9'] .passport-stamps span {
+  border-radius: 50%;
+  border-style: double;
+  padding: 9px;
+}
+[data-exploration='9'] .play-section {
+  border: 1px solid #749d91;
+}
+[data-exploration='9'] .game-message {
+  background: #f8f3df;
+}
+[data-exploration='9']:not([data-level='world']) .career-guide {
+  display: none;
+}
+[data-exploration='9']:not([data-level='world']) .field-guide {
+  display: block;
+  grid-column: 1;
+  grid-row: 2;
+}
+[data-exploration='9']:not([data-level='world']) .play-section {
+  grid-column: 2;
+  grid-row: 2;
+}
+[data-exploration='9'] .project-discovery {
+  grid-column: 1/-1;
+}
+/* 10: two equal screens; the companion owns the information hierarchy. */
+[data-exploration='10'] {
+  background: #dedec8;
+}
+[data-exploration='10'] .adventure-shell {
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 1fr);
+  gap: 22px;
+  max-width: 1420px;
+}
+[data-exploration='10'] .intro-strip h1 {
+  font-size: 32px;
+}
+[data-exploration='10'] .career-guide {
+  grid-column: 1/-1;
+  order: 3;
+  padding: 0;
+}
+[data-exploration='10'] .career-guide > .guide-title,
+[data-exploration='10'] .career-guide > h2,
+[data-exploration='10'] .guide-intro,
+[data-exploration='10'] .passport,
+[data-exploration='10'] .chronology-note {
+  display: none;
+}
+[data-exploration='10'] .career-stops {
+  display: flex;
+  justify-content: space-between;
+}
+[data-exploration='10'] .career-stops li:before {
+  display: none;
+}
+[data-exploration='10'] .career-stops button {
+  padding: 10px;
+}
+[data-exploration='10'] .stop-number {
+  background: #dedec8;
+}
+[data-exploration='10'] .field-guide {
+  display: block;
+  grid-column: 2;
+  grid-row: 2;
+  border: 8px solid #849774;
+  border-radius: 8px 8px 30px 8px;
+  box-shadow: 5px 5px #697a5240;
+}
+[data-exploration='10'] .play-section {
+  grid-column: 1;
+  grid-row: 2;
+  border: 8px solid #849774;
+  border-radius: 8px 8px 8px 30px;
+  overflow: hidden;
+  box-shadow: 5px 5px #697a5240;
+}
+[data-exploration='10'] .game-message {
+  flex-wrap: wrap;
+  min-height: 147px;
+}
+[data-exploration='10'] .game-message .primary-action {
+  margin-left: 52px;
+}
+[data-exploration='10'] .game-controls > span:nth-child(2) {
+  display: none;
+}
+[data-exploration='10'] .guide-preview {
+  height: 190px;
+  overflow: hidden;
+}
+[data-exploration='10'] .guide-preview canvas {
+  height: 100%;
+  object-fit: cover;
+}
+[data-exploration='10'] .field-copy h2 {
+  font-size: 32px;
+}
+[data-exploration='10'] .project-discovery {
+  grid-column: 1/-1;
+  order: 4;
+}
+@media (min-width: 1600px) {
+  .adventure-shell {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+  .intro-strip h1 {
+    font-size: 43px;
+  }
+  .career-stops strong {
+    font-size: 13px;
+  }
+  .career-stops small {
+    font-size: 10px;
+  }
+  .game-message p {
+    font-size: 14px;
+  }
+  .location-banner strong {
+    font-size: 22px;
+  }
+  .location-banner small {
+    font-size: 9px;
+  }
+}
+@media (max-width: 1100px) {
+  .adventure-shell {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 18px;
+  }
+  .intro-strip {
+    gap: 25px;
+  }
+  .intro-strip h1 {
+    font-size: 30px;
+  }
+  .intro-strip > p {
+    font-size: 10px;
+    max-width: 210px;
+  }
+  .game-message {
+    gap: 10px;
+    padding: 13px;
+    flex-wrap: wrap;
+  }
+  .game-message p {
+    font-size: 11px;
+  }
+  .game-message .primary-action {
+    margin-left: 47px;
+  }
+  .game-controls > span:nth-child(2) {
+    display: none;
+  }
+  .location-banner {
+    top: 12px;
+    left: 12px;
+    padding: 8px 12px;
+  }
+  .location-banner strong {
+    font-size: 16px;
+  }
+  .location-banner small {
+    font-size: 6px;
+  }
+  .field-copy {
+    padding: 16px;
+  }
+  .field-copy h2 {
+    font-size: 24px;
+  }
+  [data-exploration='6']:not([data-level='world']) .adventure-shell,
+  [data-exploration='8'] .adventure-shell {
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+  [data-exploration='8'] .map-stage {
+    min-height: 400px;
+  }
+  [data-exploration='7'] .career-stops button {
+    padding: 12px 7px;
+    gap: 5px;
+  }
+  [data-exploration='7'] .career-stops small {
+    font-size: 7px;
+  }
+  [data-exploration='7'] .stop-check {
+    display: none;
+  }
+  [data-exploration='9'] .adventure-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  [data-exploration='10'] .career-stops small {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .explore-header {
+    height: 70px;
+    margin: 0 5%;
+  }
+  .explore-brand {
+    font-size: 13px;
+    gap: 9px;
+  }
+  .explore-brand small {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .brand-sprite {
+    width: 29px;
+    height: 31px;
+    font-size: 25px;
+  }
+  .explore-header nav {
+    gap: 13px;
+    font-size: 9px;
+  }
+  .explore-header nav a:nth-child(2) {
+    display: none;
+  }
+  .explore-header nav button {
+    font-size: 8px;
+    padding: 7px;
+  }
+  .explore-header nav button span {
+    display: none;
+  }
+  .adventure-shell {
+    display: flex !important;
+    flex-direction: column;
+    padding: 24px 4% 115px;
+    gap: 18px !important;
+  }
+  .intro-strip {
+    order: 0 !important;
+    display: flex !important;
+    gap: 15px;
+    padding: 0 1%;
+    align-items: end;
+  }
+  .intro-strip h1 {
+    font-size: 27px !important;
+  }
+  .intro-strip .micro {
+    font-size: 7px;
+  }
+  .intro-strip > p {
+    display: none;
+  }
+  .round-label {
+    font-size: 6px;
+    line-height: 2;
+  }
+  .play-section {
+    order: 1 !important;
+    width: 100%;
+  }
+  .career-guide {
+    order: 3 !important;
+    width: 100%;
+    padding: 0;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: none !important;
+  }
+  .career-guide > .guide-title,
+  .career-guide > h2,
+  .guide-intro,
+  .passport,
+  .chronology-note {
+    display: none !important;
+  }
+  .career-stops {
+    display: flex !important;
+    overflow-x: auto;
+    gap: 9px;
+    border: 0 !important;
+    background: none !important;
+    padding-bottom: 4px;
+  }
+  .career-stops li {
+    min-width: 157px;
+    border: 1px solid #b4c6a0 !important;
+    background: #f7f3df;
+  }
+  .career-stops li:before {
+    display: none !important;
+  }
+  .career-stops button {
+    padding: 10px !important;
+    gap: 8px !important;
+  }
+  .career-stops strong {
+    font-size: 10px;
+  }
+  .career-stops small {
+    font-size: 7px !important;
+  }
+  .career-stops .stop-number {
+    background: #f7f3df !important;
+  }
+  .stop-check {
+    display: none;
+  }
+  .field-guide {
+    order: 2 !important;
+    display: block !important;
+    width: 100%;
+    border: 1px solid var(--edge) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .field-guide .guide-title,
+  .guide-preview,
+  .field-foot {
+    display: none !important;
+  }
+  .field-copy {
+    padding: 16px !important;
+  }
+  .field-copy h2 {
+    font-size: 24px;
+  }
+  .field-copy .role {
+    font-size: 9px;
+    margin: 8px 0;
+  }
+  .field-copy > p:not(.role) {
+    font-size: 10px;
+  }
+  .destination-list {
+    flex-direction: column !important;
+    margin-top: 13px !important;
+  }
+  .destination-list button {
+    font-size: 11px;
+    padding: 11px;
+  }
+  .map-toolbar {
+    padding: 10px;
+    min-height: 34px;
+  }
+  .map-toolbar .micro {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .map-mode {
+    font-size: 8px;
+  }
+  .back-button {
+    font-size: 9px;
+    padding-right: 8px;
+  }
+  .map-toolbar > div {
+    gap: 8px;
+  }
+  .map-stage {
+    aspect-ratio: 1.6 !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  .location-banner {
+    top: 8px;
+    left: 8px;
+    padding: 5px 7px;
+    max-width: 64%;
+    border-width: 1px;
+    box-shadow: 2px 2px #33503840;
+  }
+  .location-banner > span {
+    font-size: 5px;
+    letter-spacing: 1px;
+  }
+  .location-banner strong {
+    font-size: 11px;
+  }
+  .location-banner small {
+    display: none;
+  }
+  .map-watermark {
+    font-size: 4px;
+    left: 8px;
+    bottom: 7px;
+  }
+  .map-coordinates {
+    font-size: 6px;
+    padding: 4px;
+    bottom: 7px;
+    right: 7px;
+  }
+  .game-message {
+    padding: 12px;
+    gap: 10px;
+    min-height: 120px;
+  }
+  .game-message .micro {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .game-message p {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .talking-sprite {
+    width: 32px;
+    height: 40px;
+  }
+  .game-message .primary-action {
+    padding: 10px 15px;
+    font-size: 12px;
+    margin-left: 42px !important;
+  }
+  .game-controls {
+    justify-content: center;
+    padding: 8px;
+  }
+  .game-controls > span {
+    display: none;
+  }
+  .game-controls button {
+    font-size: 8px;
+  }
+  .touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px;
+    background: #e6eccf;
+    border-top: 1px solid #b7c79e;
+  }
+  .touch-controls > div {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .touch-controls button {
+    background: #faf5de;
+    border: 1px solid #b4c69b;
+    min-width: 34px;
+    min-height: 28px;
+    font: 14px 'Pixelify Sans';
+    box-shadow: 1px 2px #aaba94;
+  }
+  .touch-controls [data-interact] {
+    font-size: 10px;
+    width: 75px;
+  }
+  .round-switcher {
+    bottom: 12px;
+    gap: 8px;
+    padding: 9px;
+    max-width: calc(100% - 20px);
+  }
+  .round-one {
+    display: none;
+  }
+  .round-switcher strong {
+    font-size: 9px;
+    min-width: 119px;
+  }
+  .round-switcher > button {
+    font-size: 16px;
+    padding: 2px;
+  }
+  .new-designs {
+    gap: 2px;
+  }
+  .new-designs button {
+    width: 22px;
+    height: 26px;
+    font-size: 10px;
+  }
+  .round-switcher > div > span {
+    font-size: 5px;
+  }
+  .round-switcher > div > span b {
+    margin-left: 5px;
+  }
+  .project-discovery {
+    order: 4 !important;
+    width: 100%;
+  }
+  .project-heading {
+    padding: 12px;
+    gap: 8px;
+  }
+  .project-heading .micro {
+    font-size: 7px;
+  }
+  .project-metric {
+    font-size: 10px;
+  }
+  .discovery-layout {
+    grid-template-columns: 1fr;
+  }
+  .discovery-layout article {
+    padding: 20px;
+  }
+  .discovery-layout h2 {
+    font-size: 25px;
+  }
+  .discovery-layout article > p:not(.micro) {
+    font-size: 11px;
+  }
+  .travel-overlay strong {
+    font-size: 22px;
+  }
+  .plane-icon {
+    font-size: 35px;
+  }
+  [data-exploration='10'] .play-section {
+    border-width: 5px;
+    border-radius: 5px 5px 5px 23px;
+  }
+  [data-exploration='10'] .game-message {
+    min-height: 120px;
+  }
+  [data-exploration='7'] .career-guide,
+  [data-exploration='10'] .career-guide {
+    order: 3 !important;
+  }
+  [data-exploration='7'] .field-copy > .micro,
+  [data-exploration='7'] .field-copy > h2,
+  [data-exploration='7'] .field-copy > p {
+    display: initial;
+  }
+  .help-dialog {
+    padding: 28px;
+  }
+  .help-dialog h2 {
+    font-size: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* Keep location signage above the in-world building signs. */
+[data-level='world'] .location-banner {
+  top: 8px;
+  padding: 5px 10px;
+}
+[data-level='world'] .location-banner small {
+  display: none;
+}
+[data-level='world'] .location-banner strong {
+  font-size: 15px;
+}
+.travel-overlay .plane-icon {
+  animation: boarding-flight 1.7s linear both;
+}
+@keyframes boarding-flight {
+  from {
+    transform: translateX(-120px) rotate(-9deg);
+  }
+  to {
+    transform: translateX(120px) rotate(-9deg);
+  }
+}
+@media (max-width: 760px) {
+  [data-level='world'] .location-banner strong {
+    font-size: 10px;
+  }
+  [data-level='world'] .location-banner {
+    padding: 4px 7px;
+  }
+}
+/* Preserve tile coordinates at every breakpoint: no letterboxing or map cropping. */
+[data-exploration='7'] .map-stage,
+[data-exploration='8'] .map-stage {
+  aspect-ratio: 1.6;
+  min-height: 0;
+  max-height: none;
+}
+[data-exploration='7'] #adventure-map,
+[data-exploration='8'] #adventure-map {
+  object-fit: fill;
+}
+[data-exploration='9'] .passport-stamps {
+  gap: 5px;
+}
+[data-exploration='9'] .passport-stamps span {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 3px;
+  text-align: center;
+  font-size: 12px;
+}

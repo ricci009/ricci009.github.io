@@ -1,0 +1,42 @@
+<svg class="penguin-mark" viewBox="0 0 64 72" aria-hidden="true" focusable="false">
+  <ellipse class="penguin-shadow" cx="32" cy="66" rx="16" ry="3" fill="#bba3d5" opacity=".2" />
+  <g class="penguin-flyer">
+    <path class="penguin-wing penguin-wing-left" d="M20 32C12 32 7 42 8 49Q14 49 22 39Z" fill="#32343e" stroke="#92939b" stroke-width="1.2" />
+    <path class="penguin-wing penguin-wing-right" d="M44 32C52 32 57 42 56 49Q50 49 42 39Z" fill="#32343e" stroke="#92939b" stroke-width="1.2" />
+    <path d="M22 57Q14 59 16 63Q23 65 29 61M42 57Q50 59 48 63Q41 65 35 61" fill="#efbc72" />
+    <path d="M32 18C20 18 16 30 16 43C16 56 22 61 32 61S48 56 48 43C48 30 44 18 32 18Z" fill="#202129" stroke="#92939b" stroke-width="1.3" />
+    <path d="M32 32C20 23 20 38 21 45C21 54 25 57 32 57S43 54 43 45C44 38 44 23 32 32Z" fill="#f0ece3" />
+    <ellipse cx="26" cy="34" rx="1.7" ry="2.3" fill="#202129" />
+    <ellipse cx="38" cy="34" rx="1.7" ry="2.3" fill="#202129" />
+    <path d="M27 39Q32 36 37 39L32 43Z" fill="#efbc72" />
+    <path d="M19 24Q20 15 32 15Q44 15 45 24Z" fill="#bba3d5" />
+    <path d="M32 15V24H43Q41 17 32 15Z" fill="#86c8a2" />
+    <path d="M18 24H46" stroke="#e2d2f5" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M32 15V10" stroke="#e2d2f5" stroke-width="2" />
+    <g class="penguin-propeller">
+      <path d="M32 9C24 3 14 5 15 8C16 11 25 11 32 9C40 3 50 5 49 8C48 11 39 11 32 9Z" fill="#d6c2ed" />
+    </g>
+    <circle cx="32" cy="9" r="2" fill="#efbc72" />
+  </g>
+</svg>
+
+<style>
+  .penguin-mark { width: 47px; height: 53px; flex: 0 0 47px; overflow: visible; }
+  .penguin-flyer { transition: transform 350ms ease; }
+  .penguin-propeller { transform-origin: 32px 9px; animation: propeller-spin 1.5s linear infinite; }
+  .penguin-wing-left { transform-origin: 20px 34px; }
+  .penguin-wing-right { transform-origin: 44px 34px; }
+  .penguin-shadow { transform-origin: 32px 66px; transition: transform 350ms ease, opacity 350ms ease; }
+  :global(.site-brand:is(:hover, :focus-visible)) .penguin-flyer { animation: penguin-lift 1s ease-in-out infinite alternate; }
+  :global(.site-brand:is(:hover, :focus-visible)) .penguin-propeller { animation-duration: 130ms; }
+  :global(.site-brand:is(:hover, :focus-visible)) .penguin-wing-left { animation: flap-left 160ms ease-in-out infinite alternate; }
+  :global(.site-brand:is(:hover, :focus-visible)) .penguin-wing-right { animation: flap-right 160ms ease-in-out infinite alternate; }
+  :global(.site-brand:is(:hover, :focus-visible)) .penguin-shadow { transform: scale(.65); opacity: .1; }
+  @keyframes propeller-spin { to { transform: rotateY(360deg); } }
+  @keyframes penguin-lift { from { transform: translateY(-3px) rotate(-3deg); } to { transform: translateY(-8px) rotate(3deg); } }
+  @keyframes flap-left { to { transform: rotate(55deg); } }
+  @keyframes flap-right { to { transform: rotate(-55deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .penguin-mark * { animation: none !important; transition: none !important; }
+  }
+</style>

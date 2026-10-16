@@ -1,0 +1,36 @@
+---
+import Workbench from '../components/prototype/WorkbenchPrototype.astro';
+import DeskJourney from '../components/DeskJourney.astro';
+import SocialMetadata from '../components/SocialMetadata.astro';
+---
+
+<!doctype html>
+<html lang="en" data-concept="ascii">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Riccardo Salzmann — software engineer working in live sports graphics, interactive 3D, and embedded systems. Explore the work through a 3D ASCII desk."
+    />
+    <meta name="theme-color" content="#000000" />
+    <SocialMetadata
+      title="Riccardo Salzmann — The workbench"
+      description="Live sports graphics, interactive worlds, and the systems behind them. A desk full of possibilities."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Riccardo Salzmann — Software engineer</title>
+    <DeskJourney />
+  </head>
+  <body>
+    <Workbench />
+    <script>
+      import('../scripts/asciiWorkbenchPrototype').catch(() => {
+        const status = document.querySelector('.ascii-loading');
+        if (status)
+          status.textContent =
+            'The desk could not load. Browse all work using the links below.';
+      });
+    </script>
+  </body>
+</html>

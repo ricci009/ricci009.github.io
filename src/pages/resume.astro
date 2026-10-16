@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/PortfolioLayout.astro';
+import { profile, work, skills } from '../data/portfolio';
+const experience = ['smt', 'quantum', 'edag'].map((id) =>
+  work.find((section) => section.id === id)!,
+);
+const resumeHighlights: Record<string, string[]> = {
+  smt: [
+    'Built a multithreaded C++ application integrating external APIs to render kick trajectories, aired during NBC’s Super Bowl LX broadcast.',
+    'Developed video fingerprints for NBA camera identification, accelerating DCT hashing with CUDA and handling asynchronous buffers and out-of-order frames.',
+    'Delivered automatic player-data/video synchronization across hockey, football, and basketball using Ceres optimization and Hungarian matching.',
+    'Built a NASCAR telemetry analysis tool and analyzed 6M+ records, producing reports that uncovered issues in Vector hardware devices.',
+    'Created a shared C++/OpenGL line-rendering library used by 6+ applications across NBA, NFL, and NHL broadcasts.',
+    'Delivered terrain-following putting rings and distance overlays for Golf Channel’s Masters Tournament broadcast.',
+    'Implemented confidence-scored sketch recognition used for live telestration on NBC Sunday Night Football.',
+  ],
+  quantum: [
+    'Architected and built an interactive 3D web application with TypeScript, React, and Three.js; owned client requirements, application design, and implementation.',
+    'Automated 3D asset preparation with Blender, Python, and Node.js, including model validation, compression, and preview generation.',
+    'Optimized loading and rendering through code splitting, Web Workers, and graphics resource reuse; added automated coverage with Vitest and React Testing Library.',
+    'Built a Python/JavaScript interface for a Linux-based e-ink display, supporting image conversion, uploads, and scheduled playback.',
+  ],
+};
+---
+
+<Layout
+  title="Résumé — Riccardo Salzmann"
+  description="Riccardo Salzmann’s experience, education, technical skills, and current downloadable résumé."
+>
+  <div class="content-shell">
+    <header class="content-header">
+      <p class="kicker">EXPERIENCE / EDUCATION / SKILLS</p>
+      <h1>
+        Riccardo Salzmann
+        <span>
+          .<br />
+          Software engineer.
+        </span>
+      </h1>
+      <p class="lede">
+        Real-time graphics, interactive applications, and systems engineering. A
+        University of Michigan computer science graduate working at SMT and
+        freelancing for Quantum America.
+      </p>
+      <div class="action-row">
+        <a class="site-button" href={profile.resume} download>
+          Download résumé PDF ↓
+        </a>
+        <a
+          class="site-button secondary"
+          href={profile.resume}
+          target="_blank"
+          rel="noopener"
+        >
+          Open PDF ↗
+        </a>
+        <a class="site-button secondary" href={`mailto:${profile.email}`}>
+          Get in touch ↗
+        </a>
+      </div>
+    </header>
+    <section class="resume-section">
+      <h2>Experience</h2>
+      {experience.map((section) => (
+        <article class="resume-role" style={`--accent:${section.accent}`}>
+          <h3>
+            {section.organization} · {section.role}
+          </h3>
+          <p class="role-dates">
+            {section.dates} / {section.location}
+          </p>
+          <p>{section.intro}</p>
+          {section.experiences ? (
+            section.experiences.map((term) => (
+              <section class="resume-term">
+                <h4>{term.title}</h4>
+                <p class="role-dates">
+                  {term.dates}
+                  {term.location && ` / ${term.location}`}
+                </p>
+                <ul>
+                  {term.highlights.map((highlight) => (
+                    <li>{highlight}</li>
+                  ))}
+                </ul>
+                <a class="text-link" href={`/work/${section.id}/#${term.id}`}>
+                  Explore this experience →
+                </a>
+              </section>
+            ))
+          ) : (
+            <ul>
+              {resumeHighlights[section.id]!.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          )}
+          <a class="text-link" href={`/work/${section.id}/`}>
+            Explore the projects →
+          </a>
+        </article>
+      ))}
+    </section>
+    <section class="resume-section">
+      <h2>Open source & leadership</h2>
+      <article class="resume-role">
+        <h3>Rust standard library & compiler tests</h3>
+        <p class="role-dates">November 2024 — March 2025</p>
+        <p>
+          Modularized C-compatible primitive types for FFI testing in merged PR
+          #136334. Prototyped cross-target tests comparing Rust type sizes and
+          signedness against Clang in unmerged PR #133944.
+        </p>
+        <a class="text-link" href="/work/rust/">
+          Read about the contributions →
+        </a>
+      </article>
+      <article class="resume-role">
+        <h3>Head JV Soccer Coach · East Chapel Hill High School</h3>
+        <p class="role-dates">
+          August — October 2025 / Chapel Hill, North Carolina
+        </p>
+        <p>
+          Managed a high school junior varsity team through a full season,
+          planning and coaching training sessions and games.
+        </p>
+      </article>
+    </section>
+    <section class="resume-section">
+      <h2>Education</h2>
+      <article class="resume-role">
+        <h3>University of Michigan · B.S. in Computer Science</h3>
+        <p class="role-dates">
+          Degree awarded December 2024 / Ann Arbor, Michigan
+        </p>
+      </article>
+    </section>
+    <section class="resume-section">
+      <h2>Technical & practical skills</h2>
+      {skills.map((group) => (
+        <div class="skill-group">
+          <h3>{group.name}</h3>
+          <ul class="skill-tags">
+            {group.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <p class="plain-note">Languages: English (native), German (fluent).</p>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,27 @@
+---
+interface Props {
+  scene?: string;
+  active?: boolean;
+}
+const { scene = 'campus', active = false } = Astro.props;
+const descriptions: Record<string, string> = {
+  campus:
+    'University of Michigan pixel campus with a reading student and maize-and-blue flag',
+  graduation:
+    'University of Michigan graduation with a floating cap and confetti',
+  garage: 'EDAG workshop in Ingolstadt, with a CAN display and moving car',
+  broadcast:
+    'SMT production desk and a large screen animating a live football kick trajectory',
+  houses: 'Quantum house simulation website with a selectable 3D neighborhood',
+};
+---
+
+<canvas
+  class="scene-canvas"
+  width="480"
+  height="260"
+  data-scene={scene}
+  data-active-scene={active || undefined}
+  role="img"
+  aria-label={descriptions[scene]}
+></canvas>

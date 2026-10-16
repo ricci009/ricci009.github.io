@@ -1,0 +1,17 @@
+---
+import { profile } from '../data/portfolio';
+---
+
+<footer class="site-bottom">
+  <span>© {new Date().getFullYear()} Riccardo Salzmann</span>
+  <nav aria-label="Social and contact links">
+    <a href={profile.github} target="_blank" rel="noopener">
+      GitHub ↗
+    </a>
+    <a href={profile.linkedin} target="_blank" rel="noopener">
+      LinkedIn ↗
+    </a>
+    <a href={`mailto:${profile.email}`}>Email ↗</a>
+  </nav>
+  <span>GRAPHICS / SYSTEMS / INTERACTIVE WORLDS</span>
+</footer>

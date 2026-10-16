@@ -1,0 +1,646 @@
+---
+import type { WorkProject } from '../data/portfolio';
+interface Props {
+  kind: Exclude<NonNullable<WorkProject['visual']>, 'soccer'>;
+}
+const { kind } = Astro.props;
+const playerPositions: [number, number][] = [
+  [160, 140],
+  [255, 92],
+  [345, 144],
+  [430, 85],
+];
+const captions = {
+  kick: [
+    'From data to flight path',
+    'Incoming kick data becomes a trail and a result in the broadcast renderer.',
+  ],
+  camera: [
+    'Find the camera behind the program feed',
+    'Compact frame fingerprints connect the on-air picture with its source camera.',
+  ],
+  sync: [
+    'Two sources. One moment.',
+    'Move the example timing offset to align tracked positions with the video detections.',
+  ],
+  telemetry: [
+    'Turn a race into something you can investigate',
+    'Load raw records, inspect the signals, and export anomalies for hardware analysis.',
+  ],
+  lines: [
+    'Same points. Different geometry.',
+    'Choose a join to see how the corner of a thick line changes.',
+  ],
+  golf: [
+    'A ring that belongs to the terrain',
+    'An operator selection is projected onto the course mesh; the overlay follows its surface.',
+  ],
+  sketch: [
+    'A rough idea becomes a readable graphic',
+    'Stroke analysis and confidence scoring turn freehand input into clean broadcast geometry.',
+  ],
+  sports: [
+    'A different visual language for each sport',
+    'Field-aware football graphics, camera-facing basketball nameplates, and hockey spotlights.',
+  ],
+};
+const [title, caption] = captions[kind];
+---
+
+<figure class="smt-visual" data-smt-visual={kind}>
+  <div class="visual-meta">
+    <span>GRAPHICS LAB / {kind.toUpperCase()}</span>
+    <span>CONCEPT STUDY</span>
+  </div>
+  <svg viewBox="0 0 600 240" role="img" aria-label={title}>
+    <title>{title}</title>
+    <desc>
+      {caption} Illustrative geometry, not broadcast footage or measured data.
+    </desc>
+    <defs>
+      <pattern
+        id={`grid-${kind}`}
+        width="24"
+        height="24"
+        patternUnits="userSpaceOnUse"
+      >
+        <path
+          d="M 24 0 H 0 V 24"
+          fill="none"
+          stroke="#193039"
+          stroke-width="0.7"
+        />
+      </pattern>
+    </defs>
+    <rect width="600" height="240" fill={`url(#grid-${kind})`} opacity="0.65" />
+    {kind === 'kick' && (
+      <>
+        <path d="M42 207 L176 122 H486 L566 207 Z" class="surface" />
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+          <path
+            d={`M${83 + i * 68} 207 L${200 + i * 42} 122`}
+            class="gridline"
+          />
+        ))}
+        <path
+          d="M90 184 Q280 -75 467 102"
+          class="accent-line"
+          stroke-width="3"
+          stroke-dasharray="5 6"
+        />
+        <path
+          d="M442 61 V113 H496 V61 M469 113 V163"
+          class="warm-line"
+          stroke-width="4"
+        />
+        {[
+          [90, 184],
+          [155, 115],
+          [227, 70],
+          [302, 49],
+          [378, 57],
+          [445, 85],
+        ].map(([x, y], i) => (
+          <circle
+            cx={x}
+            cy={y}
+            r={i === 5 ? 6 : 3}
+            fill={i === 5 ? '#e9bb7d' : '#86d7ee'}
+          />
+        ))}
+        <path d="M303 50 V24 H376" class="muted-line" />
+        <text x="383" y="29">
+          FLIGHT DATA
+        </text>
+        <text x="47" y="226">
+          API → PARSE → RENDER
+        </text>
+      </>
+    )}
+    {kind === 'camera' && (
+      <>
+        {[0, 1, 2].map((i) => (
+          <g transform={`translate(${28 + i * 184},28)`}>
+            <rect
+              width="166"
+              height="101"
+              rx="3"
+              class={i === 1 ? 'selected-frame' : 'surface'}
+            />
+            <path
+              d="M17 84 L50 33 H124 L150 84 Z M85 33 V84"
+              class="gridline"
+            />
+            <circle
+              cx={i === 0 ? 60 : 92}
+              cy={i === 2 ? 63 : 53}
+              r="6"
+              fill={i === 1 ? '#86d7ee' : '#5e7480'}
+            />
+            <path d="M48 67 H67 M114 63 H134" class="muted-line" />
+            <text x="12" y="20">
+              CAM 0{i + 1}
+            </text>
+            <g transform="translate(17,114)">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => (
+                <rect
+                  x={n * 18}
+                  width="12"
+                  height="13"
+                  fill={(n + i) % 3 === 0 ? '#86d7ee' : '#304651'}
+                />
+              ))}
+            </g>
+          </g>
+        ))}
+        <path
+          d="M112 164 V193 H488 V164 M300 164 V209"
+          class="muted-line"
+          stroke-dasharray="4 5"
+        />
+        <rect
+          x="205"
+          y="185"
+          width="190"
+          height="40"
+          rx="3"
+          fill="#102b33"
+          stroke="#86d7ee"
+        />
+        <text x="300" y="210" text-anchor="middle" class="bright-text">
+          PROGRAM = CAM 02
+        </text>
+      </>
+    )}
+    {kind === 'sync' && (
+      <>
+        <path d="M45 190 L154 43 H455 L558 190 Z" class="surface" />
+        <path d="M300 43 V190 M99 117 H507" class="gridline" />
+        {playerPositions.map(([x, y]) => (
+          <g>
+            <rect
+              x={x - 13}
+              y={y - 23}
+              width="26"
+              height="38"
+              rx="3"
+              fill="none"
+              stroke="#e9bb7d"
+              stroke-width="2"
+            />
+            <circle cx={x} cy={y - 10} r="5" fill="#e9bb7d" opacity="0.55" />
+            <path d={`M${x} ${y - 4} V${y + 8}`} class="warm-line" />
+          </g>
+        ))}
+        <g data-tracking-points transform="translate(44,0)">
+          {playerPositions.map(([x, y]) => (
+            <g>
+              <circle
+                cx={x}
+                cy={y - 3}
+                r="19"
+                fill="#86d7ee"
+                fill-opacity="0.08"
+                stroke="#86d7ee"
+                stroke-dasharray="3 3"
+              />
+              <path
+                d={`M${x - 6} ${y - 3} H${x + 6} M${x} ${y - 9} V${y + 3}`}
+                class="accent-line"
+              />
+            </g>
+          ))}
+        </g>
+        <text x="45" y="222" class="warm-text">
+          □ VIDEO DETECTIONS
+        </text>
+        <text x="334" y="222">
+          + TRACKED POSITIONS
+        </text>
+      </>
+    )}
+    {kind === 'telemetry' && (
+      <>
+        <path d="M51 185 V39 M51 185 H551" class="muted-line" />
+        <path
+          d="M52 142 L72 138 L92 150 L112 128 L132 133 L152 114 L172 120 L192 106 L212 119 L232 100 L252 121 L272 109 L292 98 L312 111 L332 42 L352 118 L372 108 L392 122 L412 101 L432 114 L452 127 L472 116 L492 130 L512 125 L548 144"
+          class="accent-line"
+          stroke-width="2.5"
+        />
+        <path
+          d="M52 162 Q170 130 280 156 T548 147"
+          class="warm-line"
+          stroke-dasharray="6 4"
+        />
+        <rect
+          x="315"
+          y="31"
+          width="34"
+          height="154"
+          fill="#e9bb7d"
+          opacity="0.09"
+        />
+        <circle cx="332" cy="42" r="5" fill="#e9bb7d" />
+        <path d="M345 42 H410" class="warm-line" />
+        <text x="420" y="46" class="warm-text">
+          INSPECT
+        </text>
+        <text x="53" y="217">
+          RAW CSV
+        </text>
+        <text x="257" y="217">
+          FILTER + PLOT
+        </text>
+        <text x="468" y="217">
+          REPORT
+        </text>
+      </>
+    )}
+    {kind === 'lines' && (
+      <>
+        <path
+          data-join-line
+          d="M106 180 L269 62 L367 180 L505 88"
+          fill="none"
+          stroke="#86d7ee"
+          stroke-width="32"
+          stroke-linejoin="miter"
+        />
+        <path
+          d="M106 180 L269 62 L367 180 L505 88"
+          fill="none"
+          stroke="#081418"
+          stroke-width="1.5"
+          stroke-dasharray="5 5"
+        />
+        {[
+          [106, 180],
+          [269, 62],
+          [367, 180],
+          [505, 88],
+        ].map(([x, y]) => (
+          <circle
+            cx={x}
+            cy={y}
+            r="4"
+            fill="#e9bb7d"
+            stroke="#081418"
+            stroke-width="2"
+          />
+        ))}
+        <text x="38" y="28">
+          X / Y / Z POINTS → THICK-LINE GEOMETRY
+        </text>
+      </>
+    )}
+    {kind === 'golf' && (
+      <>
+        <g transform="translate(300,128) scale(1,0.48) rotate(-12)">
+          <path
+            d="M-240 -115 Q-75 -185 90 -105 T245 20 L205 135 Q40 190 -110 120 T-240 -115Z"
+            class="surface"
+          />
+          {[-150, -100, -50, 0, 50, 100, 150].map((n) => (
+            <path
+              d={`M${n - 30} -125 Q${n + 35} 0 ${n} 143`}
+              class="gridline"
+            />
+          ))}
+          {[-90, -45, 0, 45, 90].map((n) => (
+            <path
+              d={`M-220 ${n} Q-80 ${n - 45} 0 ${n} T230 ${n + 10}`}
+              class="gridline"
+            />
+          ))}
+          {[45, 85, 128, 171].map((r) => (
+            <path
+              d={`M${-r} 0 C${-r} ${-r * 1.35} ${r} ${-r * 0.75} ${r} 0 S${-r} ${r * 1.1} ${-r} 0`}
+              class="accent-line"
+              stroke-width="3"
+            />
+          ))}
+        </g>
+        <path
+          d="M300 126 V39 L336 51 L300 64"
+          class="warm-line"
+          stroke-width="2"
+        />
+        <circle cx="300" cy="126" r="4" fill="#e9bb7d" />
+        <path d="M126 38 L300 126" class="muted-line" stroke-dasharray="4 5" />
+        <circle cx="126" cy="38" r="5" fill="#86d7ee" />
+        <text x="36" y="26">
+          OPERATOR SELECTION
+        </text>
+        <text x="358" y="219">
+          SURFACE-FOLLOWING RINGS
+        </text>
+      </>
+    )}
+    {kind === 'sketch' && (
+      <>
+        <path
+          d="M54 140 C28 85 87 38 153 48 C219 51 229 111 211 159 C196 197 105 202 67 169 L54 140 M55 139 L61 125"
+          class="warm-line"
+          stroke-width="2.5"
+        />
+        <path
+          d="M270 120 H330 M318 110 L330 120 L318 130"
+          class="muted-line"
+          stroke-width="2"
+        />
+        <ellipse
+          cx="458"
+          cy="121"
+          rx="83"
+          ry="73"
+          class="accent-line"
+          stroke-width="3"
+        />
+        <path
+          d="M458 38 V204 M365 121 H551"
+          class="gridline"
+          stroke-dasharray="4 4"
+        />
+        <text x="86" y="225" class="warm-text">
+          FREEHAND INPUT
+        </text>
+        <text x="390" y="225">
+          FITTED GEOMETRY
+        </text>
+      </>
+    )}
+    {kind === 'sports' && (
+      <>
+        <path d="M24 183 L61 65 H171 L200 183 Z" class="surface" />
+        <path d="M36 145 H191 M44 120 H184 M52 95 H178" class="gridline" />
+        <path
+          d="M108 157 L65 91 Q110 65 160 91 Z"
+          fill="#86d7ee"
+          fill-opacity="0.15"
+          stroke="#86d7ee"
+        />
+        <circle cx="108" cy="157" r="5" fill="#e9bb7d" />
+        <path d="M224 183 L253 65 H359 L387 183 Z" class="surface" />
+        <ellipse cx="305" cy="130" rx="26" ry="15" class="gridline" />
+        <path d="M305 66 V182" class="gridline" />
+        <rect
+          x="268"
+          y="89"
+          width="76"
+          height="27"
+          fill="#102b33"
+          stroke="#86d7ee"
+        />
+        <text x="306" y="107" text-anchor="middle">
+          PLAYER
+        </text>
+        <path d="M306 117 V143" class="accent-line" />
+        <rect x="412" y="65" width="163" height="118" rx="46" class="surface" />
+        <ellipse
+          cx="497"
+          cy="128"
+          rx="47"
+          ry="38"
+          fill="#86d7ee"
+          fill-opacity="0.08"
+        />
+        <ellipse
+          cx="497"
+          cy="128"
+          rx="28"
+          ry="24"
+          fill="#86d7ee"
+          fill-opacity="0.16"
+        />
+        <circle cx="497" cy="128" r="6" fill="#e9bb7d" />
+        <text x="108" y="217" text-anchor="middle">
+          NFL / QB VISION
+        </text>
+        <text x="305" y="217" text-anchor="middle">
+          NBA / NAMEPLATES
+        </text>
+        <text x="493" y="217" text-anchor="middle">
+          NHL / SPOTLIGHT
+        </text>
+      </>
+    )}
+  </svg>
+  {kind === 'sync' && (
+    <div class="visual-controls sync-controls" data-interactive hidden>
+      <label for="smt-offset">Example timing offset</label>
+      <input id="smt-offset" type="range" min="0" max="4" step="1" value="2" />
+      <output for="smt-offset" data-sync-output>
+        2 frames apart
+      </output>
+    </div>
+  )}
+  {kind === 'lines' && (
+    <div
+      class="visual-controls"
+      data-interactive
+      hidden
+      role="group"
+      aria-label="Line join style"
+    >
+      {['miter', 'bevel', 'round'].map((join) => (
+        <button type="button" data-join={join} aria-pressed={join === 'miter'}>
+          {join}
+        </button>
+      ))}
+    </div>
+  )}
+  <figcaption>
+    <span>{caption}</span>
+    <small>
+      Illustration
+      {kind === 'telemetry' ? ' · synthetic signals, not race data' : ''}
+      {kind === 'sync'
+        ? ' · manual demonstration of alignment, not the production solver'
+        : ''}
+    </small>
+  </figcaption>
+</figure>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>('[data-smt-visual]')
+    .forEach((figure) => {
+      figure
+        .querySelector<HTMLElement>('[data-interactive]')
+        ?.removeAttribute('hidden');
+      figure
+        .querySelectorAll<HTMLButtonElement>('[data-join]')
+        .forEach((button) => {
+          button.addEventListener('click', () => {
+            figure
+              .querySelector('[data-join-line]')
+              ?.setAttribute('stroke-linejoin', button.dataset.join!);
+            figure
+              .querySelectorAll('[data-join]')
+              .forEach((option) =>
+                option.setAttribute('aria-pressed', String(option === button)),
+              );
+          });
+        });
+      const slider = figure.querySelector<HTMLInputElement>(
+        'input[type="range"]',
+      );
+      slider?.addEventListener('input', () => {
+        const offset = Number(slider.value);
+        figure
+          .querySelector('[data-tracking-points]')
+          ?.setAttribute('transform', `translate(${offset * 22},0)`);
+        const message =
+          offset === 0
+            ? 'Aligned'
+            : `${offset} frame${offset === 1 ? '' : 's'} apart`;
+        figure.querySelector('output')!.textContent = message;
+        slider.setAttribute('aria-valuetext', message);
+      });
+    });
+</script>
+
+<style>
+  .smt-visual {
+    margin: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+  .visual-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 0 12px;
+    color: #93b8c4;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #081115;
+    border: 1px solid #29404a;
+  }
+  svg text {
+    fill: #9ec2ce;
+    font:
+      11px Consolas,
+      monospace;
+    letter-spacing: 0.5px;
+  }
+  .surface {
+    fill: #0f2027;
+    stroke: #405c66;
+    stroke-width: 1.5;
+  }
+  .gridline {
+    fill: none;
+    stroke: #38535e;
+    stroke-width: 1;
+  }
+  .accent-line {
+    fill: none;
+    stroke: #86d7ee;
+  }
+  .warm-line {
+    fill: none;
+    stroke: #e9bb7d;
+  }
+  .muted-line {
+    fill: none;
+    stroke: #65818c;
+  }
+  .warm-text {
+    fill: #e9bb7d;
+  }
+  .bright-text {
+    fill: #bcecf6;
+  }
+  .selected-frame {
+    fill: #102b33;
+    stroke: #86d7ee;
+    stroke-width: 2;
+  }
+  figcaption {
+    padding: 12px 0 0;
+  }
+  figcaption strong,
+  figcaption span,
+  figcaption small {
+    display: block;
+  }
+  figcaption strong {
+    color: #d1e6ec;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  figcaption span {
+    color: #a6bac2;
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  figcaption small {
+    color: #8096a0;
+    font-size: 10px;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+  .visual-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 0 0;
+    font-size: 11px;
+    color: #b3c9d1;
+  }
+  .visual-controls[hidden] {
+    display: none;
+  }
+  .visual-controls button {
+    font: inherit;
+    text-transform: uppercase;
+    background: #101d23;
+    color: #a6bac2;
+    border: 1px solid #3d5864;
+    min-height: 38px;
+    padding: 8px 18px;
+    cursor: pointer;
+  }
+  .visual-controls button[aria-pressed='true'] {
+    background: #86d7ee;
+    color: #081115;
+    border-color: #86d7ee;
+  }
+  .visual-controls :focus-visible {
+    outline: 2px solid #e9bb7d;
+    outline-offset: 4px;
+  }
+  input {
+    accent-color: #86d7ee;
+    flex: 1;
+    min-width: 90px;
+    height: 28px;
+  }
+  output {
+    min-width: 100px;
+    color: #86d7ee;
+  }
+  @media (max-width: 520px) {
+    .visual-meta {
+      font-size: 8px;
+      padding: 0 0 12px;
+    }
+    figcaption {
+      padding: 12px 0 0;
+    }
+    .sync-controls label {
+      width: 100%;
+    }
+    .visual-controls {
+      padding: 12px 0 0;
+    }
+  }
+</style>

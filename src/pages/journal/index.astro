@@ -1,0 +1,248 @@
+---
+import Layout from '../../layouts/JournalLayout.astro';
+import { publishedPosts, formatDate } from '../../lib/journal';
+import { journalSamples as samples } from '../../lib/journalSamples';
+const posts = await publishedPosts();
+const preview =
+  import.meta.env.DEV &&
+  posts.length === 0 &&
+  Astro.url.searchParams.get('preview') === '1';
+const entries = preview
+  ? samples.map((sample, i) => ({
+      id: `sample-${i}`,
+      title: sample.title,
+      description: sample.description,
+      tags: [sample.tag],
+      date: null as Date | null,
+      sample: true,
+    }))
+  : posts.map((post) => ({ id: post.id, ...post.data, sample: false }));
+const tags = [...new Set(entries.flatMap((entry) => entry.tags))];
+const groups = Array.from(
+  { length: Math.max(1, Math.ceil(entries.length / 3)) },
+  (_, i) => entries.slice(i * 3, i * 3 + 3),
+);
+---
+
+<Layout
+  title="Field journal — Riccardo Salzmann"
+  description="Notes, experiments, and the ideas behind the work. Open the field journal and explore one entry at a time."
+>
+  <section class="journal-stage" aria-label="Field journal">
+    <div class="journal-heading">
+      <div>
+        <p class="eyebrow">RICCARDO@WORKBENCH:~$ OPEN JOURNAL</p>
+        <h1>
+          The field journal<span>. Ideas in progress.</span>
+        </h1>
+      </div>
+      <p>
+        05 / THE NOTEBOOK
+        <br />
+        Select a section. Open an entry.
+      </p>
+    </div>
+    {preview && (
+      <p class="preview-notice">
+        <span></span> Design preview · Sample entries to try the notebook. Your
+        published notes will appear here.
+      </p>
+    )}
+    {entries.length > 0 && (
+      <div class="journal-tools">
+        <div class="filter-tags" role="group" aria-label="Filter by topic">
+          <button type="button" aria-pressed="true" data-filter="all">
+            All entries
+          </button>
+          {tags.map((tag) => (
+            <button type="button" aria-pressed="false" data-filter={tag}>
+              {tag}
+            </button>
+          ))}
+        </div>
+        <label class="search-label">
+          <span class="sr-only">Find a field note</span>
+          <span aria-hidden="true">⌕</span>
+          <input id="post-search" type="search" placeholder="Find a note…" />
+        </label>
+      </div>
+    )}
+    <div class="journal-scene-toolbar">
+      <a class="text-link" href="/" data-return-desk>
+        ← Back to desk
+      </a>
+      <span data-scene-status role="status">
+        THE NOTEBOOK / ON THE DESK
+      </span>
+      <button type="button" data-cover hidden>
+        Open journal ↗
+      </button>
+    </div>
+    <div
+      class="notebook"
+      data-notebook
+      tabindex="0"
+      aria-label="3D ASCII notebook on the desk. Open the journal, then use left and right arrow keys to turn pages."
+    >
+      <div class="book-pages" data-pages>
+        <section class="paper-page introduction" data-intro>
+          <div class="page-running">
+            <span>PERSONAL OBSERVATIONS</span>
+            <span>VOL. 01</span>
+          </div>
+          <div class="intro-body">
+            <div class="journal-stamp" aria-hidden="true">
+              RS
+              <br />
+              <span>FIELD NOTES</span>
+            </div>
+            <p class="eyebrow">A NOTEBOOK BY RICCARDO SALZMANN</p>
+            <h2>
+              Ideas, in
+              <br />
+              <em>the making.</em>
+            </h2>
+            <p>
+              On building things, taking them apart, and figuring out what
+              happens in between.
+            </p>
+            <p class="intro-invitation">
+              A collection of notes from the workbench.
+              <br />
+              Some finished thoughts. Some open questions.
+            </p>
+            <div class="signature">Riccardo</div>
+          </div>
+          <div class="page-foot">
+            <span>SELECT AN ENTRY TO READ ↗</span>
+            <span data-page-number>01</span>
+          </div>
+        </section>
+        {groups.map((group, i) => (
+          <section class="paper-page entries-page">
+            <div class="page-running">
+              <span>
+                {i === 0 ? 'CONTENTS / LATEST NOTES' : 'CONTENTS / CONTINUED'}
+              </span>
+              <span>FIELD JOURNAL</span>
+            </div>
+            <div class="entry-stack">
+              {group.map((entry, index) => {
+                const Tag = entry.sample ? 'button' : 'a';
+                return (
+                  <Tag
+                    class="journal-entry"
+                    href={entry.sample ? undefined : `/journal/${entry.id}/`}
+                    type={entry.sample ? 'button' : undefined}
+                    data-sample={entry.sample ? entry.id : undefined}
+                    data-post
+                    data-title={`${entry.title} ${entry.description} ${entry.tags.join(' ')}`.toLowerCase()}
+                    data-tags={JSON.stringify(entry.tags)}
+                  >
+                    <span class="entry-meta">
+                      <span>{entry.tags.join(' / ')}</span>
+                      <span>
+                        {entry.date ? formatDate(entry.date) : 'SAMPLE ENTRY'}
+                      </span>
+                    </span>
+                    <span class="entry-main">
+                      <span class="entry-number">
+                        {String(i * 3 + index + 1).padStart(2, '0')}
+                      </span>
+                      <span>
+                        <h3>{entry.title}</h3>
+                        <p>{entry.description}</p>
+                        <span class="entry-read">
+                          Read this note <span aria-hidden="true">↗</span>
+                        </span>
+                      </span>
+                    </span>
+                  </Tag>
+                );
+              })}
+              {entries.length === 0 && (
+                <div class="blank-note">
+                  <span aria-hidden="true">✳</span>
+                  <h2>A fresh notebook.</h2>
+                  <p>
+                    The first field note is still to be written.
+                    <br />
+                    Come back for stories from the workbench.
+                  </p>
+                  <a href="/?concept=ascii">Back to the workbench ↗</a>
+                </div>
+              )}
+            </div>
+            <div class="page-foot">
+              <span>NOTES FROM THE WORKBENCH</span>
+              <span data-page-number>{String(i + 2).padStart(2, '0')}</span>
+            </div>
+          </section>
+        ))}
+      </div>
+      <div class="turning-leaf" aria-hidden="true"></div>
+      <span class="ribbon" aria-hidden="true"></span>
+    </div>
+    <div class="book-controls" data-book-controls hidden>
+      <button type="button" data-prev aria-label="Previous pages">
+        ← <span>Previous</span>
+      </button>
+      <div>
+        <p role="status" data-page-status>
+          Pages 01–02
+        </p>
+        <span class="turn-hint">TURN THE PAGE · OR USE ← →</span>
+      </div>
+      <button type="button" data-next aria-label="Next pages">
+        <span>Next</span> →
+      </button>
+    </div>
+    <p class="sr-only" role="status" data-search-status></p>
+    <noscript>
+      <p class="preview-notice">
+        Published entries are listed below. Enable JavaScript for page turns and
+        preview entries.
+      </p>
+    </noscript>
+  </section>
+  {preview && (
+    <>
+      <dialog class="note-dialog" aria-labelledby="sample-title">
+        <div class="reader-toolbar">
+          <span>SAMPLE FIELD NOTE · DESIGN PREVIEW</span>
+          <button type="button" data-close aria-label="Close entry">
+            Close <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <article data-reader-content></article>
+        <div class="reader-end">
+          End of note <span>✳</span>
+        </div>
+      </dialog>
+      {samples.map((sample, i) => (
+        <template id={`sample-${i}`}>
+          <p class="eyebrow">
+            {sample.tag} / SAMPLE ENTRY {String(i + 1).padStart(2, '0')}
+          </p>
+          <h2 id="sample-title" tabindex="-1">
+            {sample.title}
+          </h2>
+          <p class="reader-deck">{sample.description}</p>
+          <div class="prose">
+            <p>{sample.body}</p>
+            <h3>{sample.lesson}</h3>
+            <p>{sample.detail}</p>
+            <blockquote>{sample.next}</blockquote>
+          </div>
+          <p class="sample-caption">
+            This is sample text for the notebook preview, not a published
+            journal entry.
+          </p>
+        </template>
+      ))}
+    </>
+  )}
+  <script>
+    import '../../scripts/fieldJournal';
+  </script>
+</Layout>

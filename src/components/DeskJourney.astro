@@ -1,0 +1,86 @@
+<!-- Keep the last rendered desk frame visible while the next scene initializes. -->
+<script is:inline>
+  (() => {
+    let frame;
+    try {
+      frame = JSON.parse(
+        sessionStorage.getItem('desk-journey-frame') || 'null',
+      );
+      sessionStorage.removeItem('desk-journey-frame');
+    } catch {
+      return;
+    }
+    if (
+      !frame ||
+      Date.now() - frame.created > 5000 ||
+      matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+      return;
+    const veil = document.createElement('div');
+    veil.setAttribute('aria-hidden', 'true');
+    veil.dataset.journeyVeil = '';
+    Object.assign(veil.style, {
+      position: 'fixed',
+      inset: '0',
+      background: '#000',
+      zIndex: '10000',
+      pointerEvents: 'none',
+    });
+    const image = document.createElement('img');
+    image.src = frame.image;
+    Object.assign(image.style, {
+      position: 'absolute',
+      left: frame.rect.x + 'px',
+      top: frame.rect.y + 'px',
+      width: frame.rect.width + 'px',
+      height: frame.rect.height + 'px',
+    });
+    veil.append(image);
+    document.documentElement.append(veil);
+    let revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      veil
+        .animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: 550,
+          easing: 'ease-in-out',
+          fill: 'forwards',
+        })
+        .finished.then(() => veil.remove());
+    }
+    window.addEventListener('desk-journey-ready', reveal, { once: true });
+    setTimeout(reveal, 4000);
+  })();
+</script>
+<style is:global>
+  body.journey-moving {
+    pointer-events: none;
+  }
+  .journey-moving .wb-object-layer,
+  .journey-moving .ascii-hud,
+  .journey-moving .ascii-walk,
+  .journey-moving .wb-intro,
+  .journey-moving .journal-heading,
+  .journey-moving .journal-scene-toolbar,
+  .journey-moving .book-controls,
+  .journey-moving .site-nav {
+    opacity: 0;
+    transition: opacity 350ms ease;
+  }
+  .wb-object-layer,
+  .ascii-hud,
+  .ascii-walk,
+  .wb-intro,
+  .journal-heading,
+  .journal-scene-toolbar,
+  .book-controls,
+  .site-nav {
+    transition: opacity 350ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .journey-moving * {
+      transition: none !important;
+    }
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+import type { WorkProject } from '../data/portfolio';
+interface Props {
+  clips: NonNullable<WorkProject['media']>;
+}
+const { clips } = Astro.props;
+---
+
+<div class="broadcast-clips">
+  {clips.map((clip) => (
+    <figure>
+      <div class="clip-heading">
+        <span>BROADCAST EXCERPT</span>
+        <strong>{clip.title}</strong>
+      </div>
+      <video
+        controls
+        playsinline
+        muted
+        preload="none"
+        poster={clip.poster}
+        aria-label={`${clip.title} broadcast excerpt, silent`}
+      >
+        <source src={clip.src} type="video/mp4" />
+        <a href={clip.src}>Watch the {clip.title} clip</a>
+      </video>
+      <figcaption>
+        <p>{clip.description}</p>
+        <small>Broadcast excerpt · play to watch · silent</small>
+      </figcaption>
+    </figure>
+  ))}
+</div>
+<style>
+  .broadcast-clips {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 0;
+  }
+  figure {
+    margin: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+  .clip-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 0 12px;
+  }
+  .clip-heading span {
+    color: #86d7ee;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .clip-heading strong {
+    color: #dce8ed;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: contain;
+    background: #000;
+  }
+  video:focus-visible {
+    outline: 2px solid #e9bb7d;
+    outline-offset: -3px;
+  }
+  figcaption {
+    padding: 12px 0 0;
+  }
+  p {
+    margin: 0 0 10px;
+    color: #bac8d0;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  small {
+    color: #879aa5;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+</style>

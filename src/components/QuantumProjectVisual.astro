@@ -1,0 +1,292 @@
+---
+import type { WorkProject } from '../data/portfolio';
+interface Props {
+  kind: NonNullable<WorkProject['quantumVisual']>;
+}
+const { kind } = Astro.props;
+const captions = {
+  journey: 'Interactive spaces',
+  pipeline: 'Useful tools',
+  performance: 'Smooth experiences',
+  display: 'Connected displays',
+};
+const descriptions = {
+  journey:
+    'An abstract architectural scene with simple forms on a raised platform.',
+  pipeline: 'An abstract application window with a few neatly arranged cards.',
+  performance:
+    'A flowing line passing through three points, suggesting a smooth interaction.',
+  display:
+    'A desktop screen and a freestanding display showing matching abstract artwork.',
+};
+---
+
+<figure class="quantum-visual">
+  <svg viewBox="0 0 480 310" role="img" aria-label={descriptions[kind]}>
+    <defs>
+      <radialGradient id={`ambient-${kind}`}>
+        <stop stop-color="#42505a" stop-opacity=".38" />
+        <stop offset="1" stop-color="#20252a" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id={`surface-${kind}`} x2="0" y2="1">
+        <stop stop-color="#39434b" />
+        <stop offset="1" stop-color="#252d34" />
+      </linearGradient>
+      <linearGradient id={`paper-${kind}`} x2="0" y2="1">
+        <stop stop-color="#f0e5cf" />
+        <stop offset="1" stop-color="#c3c8b1" />
+      </linearGradient>
+    </defs>
+    <ellipse
+      cx="240"
+      cy="160"
+      rx="225"
+      ry="145"
+      fill={`url(#ambient-${kind})`}
+    />
+    {kind === 'journey' && (
+      <g stroke-linejoin="round">
+        <ellipse
+          cx="240"
+          cy="250"
+          rx="160"
+          ry="24"
+          fill="#0d1116"
+          opacity=".5"
+        />
+        <path
+          d="M65 181 239 96 415 180V195L240 279 65 195Z"
+          fill="#36433f"
+          stroke="#65736a"
+        />
+        <path d="M65 181 239 96 415 180 240 265Z" fill="#56665b" />
+        <path d="m91 192 153-74 140 67-153 73Z" fill="#788174" />
+        <path
+          d="m108 196 130-63 116 55"
+          fill="none"
+          stroke="#bdbaa2"
+          stroke-width="12"
+        />
+        <path d="M149 122 220 88 278 116V187L207 221 149 193Z" fill="#b9ab95" />
+        <path d="M207 150 278 116V187L207 221Z" fill="#8a9286" />
+        <path
+          d="M141 122 220 83 286 115 207 154Z"
+          fill="#e3d4b9"
+          stroke="#f0e2c9"
+          stroke-width="1.5"
+        />
+        <path d="m164 151 28 14v29l-28-14Z" fill="#3e565d" />
+        <path d="m222 161 39-19v29l-39 19Z" fill="#3e565d" />
+        <path d="M238 153v28M177 158v29" stroke="#a5b5af" stroke-width="2" />
+        <path
+          d="M278 173 321 152 350 166V200L307 221 278 207Z"
+          fill="#aa9a86"
+        />
+        <path d="M307 187 350 166V200L307 221Z" fill="#788578" />
+        <path d="M273 173 321 149 355 165 307 189Z" fill="#d5c8ad" />
+        <path d="M120 206v-27M363 190v-28" stroke="#a28f75" stroke-width="4" />
+        <ellipse cx="120" cy="168" rx="16" ry="23" fill="#8ba28b" />
+        <ellipse cx="363" cy="151" rx="15" ry="22" fill="#8ba28b" />
+      </g>
+    )}
+    {kind === 'pipeline' && (
+      <g>
+        <rect
+          x="75"
+          y="55"
+          width="330"
+          height="215"
+          rx="14"
+          fill="#0d1116"
+          opacity=".5"
+        />
+        <rect
+          x="67"
+          y="43"
+          width="346"
+          height="215"
+          rx="12"
+          fill={`url(#surface-${kind})`}
+          stroke="#75818a"
+        />
+        <path d="M68 80h344" stroke="#56636c" />
+        {[85, 98, 111].map((x) => (
+          <circle cx={x} cy="62" r="3" fill="#adb6b7" />
+        ))}
+        <rect x="88" y="101" width="86" height="135" rx="6" fill="#202a31" />
+        <path
+          d="M103 121h54m-54 22h36m-36 22h43"
+          stroke="#82948f"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+        <rect x="191" y="101" width="201" height="57" rx="6" fill="#d0b198" />
+        <path
+          d="M207 119h99m-99 17h62"
+          stroke="#78665d"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+        <rect x="191" y="173" width="94" height="63" rx="6" fill="#526c67" />
+        <rect x="299" y="173" width="93" height="63" rx="6" fill="#4d606e" />
+        <path
+          d="m211 204 11 10 25-24"
+          fill="none"
+          stroke="#c9ded0"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M320 218v-12m13 12v-25m13 25v-19m13 19v-34"
+          stroke="#bacbd3"
+          stroke-width="5"
+          stroke-linecap="round"
+        />
+      </g>
+    )}
+    {kind === 'performance' && (
+      <g>
+        <path
+          d="M63 223H416M63 156H416M63 89H416"
+          stroke="#43505b"
+          stroke-opacity=".4"
+          stroke-dasharray="2 9"
+        />
+        <path
+          d="M60 210C126 210 126 102 212 102S295 201 418 91"
+          fill="none"
+          stroke="#91b7a8"
+          stroke-opacity=".08"
+          stroke-width="32"
+          stroke-linecap="round"
+        />
+        <path
+          d="M60 210C126 210 126 102 212 102S295 201 418 91"
+          fill="none"
+          stroke="#a5c8b7"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+        {[
+          [60, 210],
+          [212, 102],
+          [418, 91],
+        ].map(([x, y]) => (
+          <g>
+            <circle cx={x} cy={y} r="12" fill="#273a35" stroke="#74978b" />
+            <circle cx={x} cy={y} r="4" fill="#d4e2ce" />
+          </g>
+        ))}
+        <g transform="translate(279 159) rotate(-15)">
+          <path
+            d="M0 0 0 37 10 27 19 40 26 35 17 22 32 20Z"
+            fill="#dfba9e"
+            stroke="#f1d4b8"
+            stroke-width="1.5"
+          />
+        </g>
+      </g>
+    )}
+    {kind === 'display' && (
+      <g>
+        <ellipse
+          cx="240"
+          cy="263"
+          rx="170"
+          ry="17"
+          fill="#0d1116"
+          opacity=".5"
+        />
+        <path
+          d="M159 208v29m-36 6h72"
+          fill="none"
+          stroke="#82908f"
+          stroke-width="8"
+          stroke-linecap="round"
+        />
+        <rect
+          x="53"
+          y="88"
+          width="213"
+          height="131"
+          rx="9"
+          fill="#303a42"
+          stroke="#77838a"
+        />
+        <rect
+          x="64"
+          y="99"
+          width="191"
+          height="108"
+          rx="3"
+          fill={`url(#paper-${kind})`}
+        />
+        <circle cx="207" cy="126" r="15" fill="#bb8368" />
+        <path d="M64 185 126 136 206 207H64Z" fill="#83938b" />
+        <path d="M113 207 199 156 255 186V207Z" fill="#556f69" />
+        <rect
+          x="310"
+          y="37"
+          width="111"
+          height="225"
+          rx="11"
+          fill="#303a42"
+          stroke="#89938d"
+        />
+        <rect
+          x="320"
+          y="48"
+          width="91"
+          height="203"
+          rx="3"
+          fill={`url(#paper-${kind})`}
+        />
+        <circle cx="380" cy="92" r="16" fill="#bb8368" />
+        <path d="M320 190 353 134 411 211V251H320Z" fill="#83938b" />
+        <path d="M320 232 384 183 411 213V251H320Z" fill="#556f69" />
+        <path
+          d="M280 148q10-10 20 0m-16 5q6-6 12 0"
+          fill="none"
+          stroke="#a5c8b7"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </g>
+    )}
+  </svg>
+  <figcaption>
+    <span>{captions[kind]}</span>
+    <span>Concept illustration</span>
+  </figcaption>
+</figure>
+<style>
+  .quantum-visual {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid #343c40;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #22292e, #171c22);
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 22px;
+    padding: 17px 0 20px;
+    border-top: 1px solid #3b4246;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #d5d5cc;
+  }
+  figcaption span:last-child {
+    color: #9ba5ac;
+    font-size: 10px;
+  }
+</style>

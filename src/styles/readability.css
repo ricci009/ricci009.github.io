@@ -1,0 +1,344 @@
+/* Body copy stays comfortably readable at every breakpoint. Pixel type is decorative. */
+.hero-description {
+  font-size: 16px;
+  max-width: 390px;
+}
+.hero-status {
+  font-size: 11px;
+  line-height: 1.6;
+}
+.hero-status .status-dot {
+  margin-top: 6px;
+}
+.button,
+.text-link {
+  font-size: 13px;
+}
+.header-contact {
+  font-size: 13px;
+}
+.wordmark-sub {
+  font-size: 9px;
+}
+.hero .eyebrow {
+  font-size: 10px;
+}
+.eyebrow {
+  font-size: 11px;
+}
+.section-heading > p {
+  font-size: 14px;
+}
+.chapter-meta {
+  font-size: 10px;
+}
+.chapter-role {
+  font-size: 14px;
+}
+.chapter-location {
+  font-size: 12px;
+}
+.chapter-intro {
+  font-size: 15px;
+}
+.tags > li {
+  font-size: 11px;
+}
+.project h4 {
+  font-size: 14px;
+}
+.project summary p {
+  font-size: 13px;
+  color: #65715d;
+}
+.project-detail p {
+  font-size: 14px;
+}
+.chapter-nav > a {
+  font-size: 12px;
+  min-height: 40px;
+  color: #66725c;
+}
+.chapter-nav {
+  column-gap: 20px;
+}
+.map-footnote {
+  font-size: 11px;
+}
+.map-location strong {
+  font-size: 14px;
+}
+.map-location .eyebrow {
+  font-size: 9px;
+}
+.map-coordinates {
+  font-size: 10px;
+}
+.chapter-memento p {
+  font-size: 14px;
+}
+.chapter-memento p span {
+  font-size: 12px;
+}
+.about-intro > p:not(.eyebrow) {
+  font-size: 15px;
+}
+.quest h3 {
+  font-size: 15px;
+}
+.quest p {
+  font-size: 14px;
+}
+.quest-caption {
+  font-size: 10px;
+}
+.toolkit > p:last-child {
+  font-size: 14px;
+}
+.journal-copy > p:not(.eyebrow) {
+  font-size: 14px;
+}
+.journal-copy .journal-empty {
+  font-size: 12px !important;
+}
+.footer-message > p {
+  font-size: 14px;
+}
+.footer-bottom > p:first-child,
+.back-top,
+.motion-toggle {
+  font-size: 11px;
+}
+.breadcrumb {
+  font-size: 13px;
+}
+.empty-journal > div > p:not(.eyebrow) {
+  font-size: 14px;
+}
+.journal-topics > span {
+  font-size: 12px;
+}
+.chapter,
+.prose h2 {
+  scroll-margin-top: 16px;
+}
+.chapter-location,
+.quest p,
+.footer-message > p {
+  color: #65705e;
+}
+@media (min-width: 601px) and (max-height: 800px) {
+  .journey-map {
+    top: 110px;
+  }
+  .map-frame .pixel-world {
+    max-height: calc(100svh - 400px);
+  }
+  .map-location {
+    padding-top: 12px;
+    padding-bottom: 7px;
+  }
+  .chapter-nav {
+    padding-top: 12px;
+  }
+  .chapter-nav > a {
+    min-height: 34px;
+  }
+  .map-footnote {
+    margin-top: 9px;
+  }
+}
+@media (max-width: 1100px) {
+  .hero-description {
+    font-size: 15px;
+  }
+  .hero .eyebrow {
+    font-size: 9px;
+  }
+  .map-footnote {
+    font-size: 10px;
+  }
+  .chapter-nav > a {
+    font-size: 11px;
+  }
+  .journey-map {
+    top: 115px;
+  }
+  .project h4 {
+    font-size: 14px;
+  }
+  .map-location strong {
+    font-size: 12px;
+  }
+}
+@media (min-width: 601px) and (max-width: 800px) {
+  .hero h1 {
+    font-size: 42px;
+  }
+  .hero-description {
+    font-size: 14px;
+  }
+  .hero .eyebrow {
+    font-size: 8px;
+  }
+  .hero-actions {
+    gap: 15px;
+  }
+  .hero-actions .text-link {
+    font-size: 12px;
+  }
+  .hero .button {
+    font-size: 11px;
+    padding: 14px 12px;
+  }
+  .hero-status {
+    font-size: 10px;
+  }
+  .map-coordinates {
+    font-size: 8px;
+  }
+  .map-location .eyebrow {
+    font-size: 7px;
+  }
+  .map-location strong {
+    font-size: 11px;
+  }
+  .chapter-nav > a {
+    font-size: 10px;
+  }
+  .map-footnote {
+    font-size: 9px;
+  }
+  .section-heading > p {
+    font-size: 12px;
+  }
+}
+@media (max-width: 600px) {
+  .wordmark-sub {
+    font-size: 7px;
+  }
+  .site-header nav {
+    font-size: 11px;
+  }
+  .hero .eyebrow {
+    font-size: 8px;
+  }
+  .hero-description {
+    font-size: 15px;
+  }
+  .hero-status {
+    font-size: 10px;
+  }
+  .button,
+  .hero-actions .text-link,
+  .text-link {
+    font-size: 12px;
+  }
+  .hero {
+    padding-top: 39px;
+  }
+  .section-heading > p {
+    font-size: 13px;
+  }
+  .chapter-meta {
+    font-size: 9px;
+  }
+  .chapter-role {
+    font-size: 13px;
+  }
+  .chapter-location {
+    font-size: 12px;
+  }
+  .chapter-intro {
+    font-size: 15px;
+  }
+  .project h4 {
+    font-size: 14px;
+  }
+  .project summary p {
+    font-size: 13px;
+  }
+  .project-detail p {
+    font-size: 14px;
+  }
+  .chapter-nav > a {
+    font-size: 11px;
+  }
+  .map-footnote {
+    font-size: 10px;
+  }
+  .map-location strong {
+    font-size: 13px;
+  }
+  .map-location .eyebrow {
+    font-size: 8px;
+  }
+  .map-coordinates {
+    font-size: 9px;
+  }
+  .chapter-memento p {
+    font-size: 13px;
+  }
+  .chapter-memento p span {
+    font-size: 11px;
+  }
+  .about-intro > p:not(.eyebrow) {
+    font-size: 15px;
+  }
+  .quest h3 {
+    font-size: 14px;
+  }
+  .quest p {
+    font-size: 13px;
+  }
+  .journal-copy > p:not(.eyebrow) {
+    font-size: 14px;
+  }
+  .journal-copy .journal-empty {
+    font-size: 11px !important;
+  }
+  .footer-message > p {
+    font-size: 13px;
+  }
+  .footer-bottom > p:first-child,
+  .motion-toggle {
+    font-size: 9px;
+  }
+  .back-top {
+    font-size: 11px;
+  }
+  .empty-journal > div > p:not(.eyebrow) {
+    font-size: 14px;
+  }
+  .journal-header > p:last-child {
+    font-size: 15px;
+  }
+}
+@media (max-width: 350px) {
+  .wordmark {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .wordmark-sub {
+    font-size: 6px;
+  }
+  .site-header nav {
+    font-size: 10px;
+    gap: 13px;
+  }
+  .site-header nav a {
+    white-space: nowrap;
+  }
+  .hero h1 {
+    font-size: 37px;
+  }
+  .hero-actions {
+    gap: 18px;
+  }
+  .hero .button {
+    font-size: 11px;
+    padding: 14px 12px;
+    gap: 10px;
+    white-space: nowrap;
+  }
+}

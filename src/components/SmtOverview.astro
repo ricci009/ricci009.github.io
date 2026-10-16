@@ -1,0 +1,143 @@
+<section class="broadcast-map" aria-labelledby="broadcast-map-title">
+  <header>
+    <p class="kicker">INSIDE A LIVE BROADCAST</p>
+    <h2 id="broadcast-map-title">The picture is only the last step.</h2>
+    <p>
+      My work spans the signals coming in, the geometry being drawn, and the
+      tools that keep it all usable on game day.
+    </p>
+  </header>
+  <div class="signal-path" aria-label="Illustrative broadcast workflow">
+    <a href="#kick-trajectories">
+      <span class="stage-number">01 / INPUT</span>
+      <strong>Data + controls</strong>
+      <span>Live APIs, player positions, and operator commands</span>
+    </a>
+    <span class="path-arrow" aria-hidden="true">
+      →
+    </span>
+    <a href="#player-synchronization">
+      <span class="stage-number">02 / ALIGN</span>
+      <strong>The right frame</strong>
+      <span>Camera identity, timing, and calibrated positions</span>
+    </a>
+    <span class="path-arrow" aria-hidden="true">
+      →
+    </span>
+    <a href="#broadcast-features">
+      <span class="stage-number">03 / RENDER</span>
+      <strong>Graphics on air</strong>
+      <span>OpenGL geometry, textures, and client art</span>
+    </a>
+  </div>
+  <div class="map-notes">
+    <span>Explore by interest</span>
+    <a href="#broadcast-features">NFL Prime Vision ↗</a>
+    <a href="#nba-prime-vision">NBA Prime Vision ↗</a>
+    <a href="#soccer-heatmaps">World Cup heatmaps ↗</a>
+    <a href="#masters-golf">Masters graphics ↗</a>
+    <a href="#nascar-telemetry">NASCAR analysis ↗</a>
+    <a href="#broadcast-reliability">Behind the pipeline ↗</a>
+  </div>
+</section>
+
+<style>
+  .broadcast-map {
+    margin: 36px 0 64px;
+    padding: 30px;
+    border: 1px solid #29404a;
+    background: linear-gradient(120deg, #0c191f, #080b10);
+  }
+  header h2 {
+    font-size: clamp(23px, 3vw, 32px);
+    font-weight: 400;
+    line-height: 1.35;
+    margin: 12px 0 16px;
+    letter-spacing: -1px;
+  }
+  header > p:last-child {
+    max-width: 680px;
+    color: #a7b8c0;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .signal-path {
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr 20px 1fr;
+    gap: 14px;
+    margin: 28px 0;
+    align-items: center;
+  }
+  .signal-path a {
+    align-self: stretch;
+    text-decoration: none;
+    border: 1px solid #304651;
+    padding: 22px 18px;
+    background: #0d161d;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .signal-path a:hover {
+    border-color: #86d7ee;
+    background: #112830;
+  }
+  a:focus-visible {
+    outline: 2px solid #e9bb7d;
+    outline-offset: 4px;
+  }
+  .stage-number {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #86d7ee;
+  }
+  .signal-path strong {
+    font-size: 16px;
+    font-weight: 400;
+    color: #e0eaf0;
+    line-height: 1.4;
+  }
+  .signal-path a > span:last-child {
+    font-size: 11px;
+    line-height: 1.8;
+    color: #a7b8c0;
+  }
+  .path-arrow {
+    color: #86d7ee;
+  }
+  .map-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    border-top: 1px solid #29404a;
+    padding-top: 22px;
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .map-notes > span {
+    color: #8798a0;
+  }
+  .map-notes a {
+    color: #bbdce7;
+    text-decoration: none;
+  }
+  .map-notes a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 650px) {
+    .broadcast-map {
+      padding: 22px;
+    }
+    .signal-path {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .path-arrow {
+      transform: rotate(90deg);
+      justify-self: center;
+    }
+    .signal-path a {
+      padding: 17px;
+    }
+  }
+</style>

@@ -1,0 +1,269 @@
+/* The playable revision has one native pixel resolution, scaled with nearest-neighbor rendering. */
+.career-world {
+  max-width: 1200px;
+}
+.world-intro {
+  padding: 24px 0;
+}
+.world-intro h1 {
+  font-size: 42px;
+}
+.world-edition {
+  color: #727d66;
+}
+.atlas-frame {
+  padding: 14px;
+  background: #cccec0;
+  border: 2px solid #87947d;
+  border-radius: 9px 9px 35px 9px;
+  box-shadow:
+    inset 2px 2px #eeeedd,
+    inset -3px -4px #acb4a2,
+    0 8px 0 #9aa58e,
+    0 16px 24px #263e4214;
+}
+.atlas-topline {
+  color: #50624f;
+  height: 28px;
+}
+.atlas-topline button {
+  color: #52634e;
+}
+.atlas-topline i {
+  background: #849959;
+  box-shadow: 0 0 0 2px #b4bea4;
+}
+.game-screen {
+  padding: 5px;
+  background: #2d4747;
+  border: 2px solid #8b967e;
+  box-shadow: 0 0 0 2px #53675d;
+}
+#career-game {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 3;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  background: #427f9c;
+  touch-action: manipulation;
+}
+#career-game:focus-visible {
+  outline: 2px solid #efd08a;
+  outline-offset: -3px;
+}
+.game-dialogue {
+  margin-top: 12px;
+  background: #faf0d1;
+  border: 2px solid #4d6253;
+  outline: 2px solid #eff0d9;
+  box-shadow: inset 0 0 0 3px #d8dcc3;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 16px;
+}
+.game-portrait {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 38px;
+  color: #e7ca78;
+  background: #4c7067;
+  border: 3px solid #355348;
+  font: 30px 'Pixelify Sans';
+  flex-shrink: 0;
+}
+.game-dialogue > div {
+  flex: 1;
+}
+.game-dialogue [data-game-region] {
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: #748167;
+}
+.game-dialogue p {
+  font: 16px/1.35 'Pixelify Sans';
+  margin-top: 5px;
+}
+.game-dialogue [data-world-visited] {
+  font: 12px 'Pixelify Sans';
+  color: #819070;
+  white-space: nowrap;
+}
+.game-deck {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 17px 10px 5px;
+}
+.game-key-help {
+  font-size: 9px;
+  color: #667760;
+}
+.game-key-help kbd {
+  font: 10px 'Pixelify Sans';
+  background: #e4e6d7;
+  border: 1px solid #a6b29a;
+  padding: 3px 5px;
+}
+.game-view-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.game-view-actions button {
+  padding: 7px 12px;
+  font-size: 9px;
+  border: 1px solid #a1ae96;
+  border-radius: 3px;
+  background: #dbdecf;
+  box-shadow: 0 2px #9da891;
+}
+.game-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 23px);
+  grid-template-rows: repeat(2, 23px);
+  gap: 2px;
+}
+.game-pad button {
+  border-radius: 2px;
+  background: #4f6257;
+  box-shadow: 0 2px #334d43;
+  color: #d7ddc7;
+  padding: 0;
+  font: 17px 'Pixelify Sans';
+}
+.game-pad button:first-child {
+  grid-column: 2;
+}
+.game-pad button:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+.game-pad button:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+}
+.game-pad button:nth-child(4) {
+  grid-column: 3;
+  grid-row: 2;
+}
+.game-a-button {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #8b5d69;
+  color: #f4d3c7;
+  box-shadow:
+    1px 4px #664953,
+    inset 1px 1px #bb8890;
+  font: 23px 'Pixelify Sans';
+}
+.game-pad button:active,
+.game-a-button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+.detail-pixel-scene {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  image-rendering: pixelated;
+  border: 4px solid #7e9678;
+  box-shadow: 0 0 0 2px #e7ebd4;
+}
+.detail-scene {
+  background: #bccba2;
+  padding: 24px 20px 48px;
+}
+.detail-scene .scene-grid,
+.detail-scene .scene-spark {
+  display: none;
+}
+.scene-caption {
+  color: #52694c;
+  font-size: 7px;
+}
+.career-dialog {
+  border: 3px solid #536951;
+  border-radius: 3px;
+}
+.career-dialog[open] {
+  animation: none;
+}
+@media (max-width: 650px) {
+  .career-world {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .world-intro {
+    padding: 23px 6px;
+  }
+  .world-intro h1 {
+    font-size: 36px;
+  }
+  .atlas-frame {
+    padding: 8px;
+    border-radius: 6px 6px 23px 6px;
+  }
+  .game-screen {
+    padding: 2px;
+  }
+  .game-dialogue {
+    min-height: 83px;
+    padding: 9px;
+    gap: 9px;
+  }
+  .game-dialogue p {
+    font-size: 12px;
+  }
+  .game-dialogue [data-game-region] {
+    font-size: 6px;
+    letter-spacing: 0.7px;
+  }
+  .game-portrait {
+    width: 24px;
+    height: 30px;
+    font-size: 22px;
+  }
+  .game-dialogue [data-world-visited] {
+    display: none;
+  }
+  .game-deck {
+    padding: 13px 4px 9px;
+    gap: 14px;
+  }
+  .game-key-help {
+    display: none;
+  }
+  .game-view-actions {
+    margin: 0 auto 0 0;
+    flex-direction: column;
+  }
+  .game-view-actions button {
+    font-size: 8px;
+    padding: 5px 8px;
+  }
+  .game-pad {
+    grid-template-columns: repeat(3, 32px);
+    grid-template-rows: repeat(2, 32px);
+    gap: 3px;
+  }
+  .game-a-button {
+    width: 45px;
+    height: 45px;
+  }
+  .world-journey {
+    padding: 30px 6px 0;
+  }
+  .detail-scene {
+    height: auto;
+    min-height: 210px;
+    padding-bottom: 38px;
+  }
+}

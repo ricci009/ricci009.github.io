@@ -1,0 +1,1745 @@
+/* Review-only design explorations. Artwork is shared; each layout is independent. */
+.new-world-link{position:fixed;right:22px;top:106px;z-index:50;background:#284b38;color:#fff0c5;border:1px solid #718c64;padding:11px 15px;font:12px 'Pixelify Sans',monospace;box-shadow:3px 3px #25472d30}
+@media(max-width:760px){.new-world-link{top:80px;right:12px;font-size:9px;padding:7px 9px}}
+:root {
+  --ink: #243e34;
+  --muted: #526e62;
+  --paper: #f8f5e9;
+  --line: #c8d3bd;
+  --accent: #b75032;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background: #e5eddb;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #d7773c;
+  outline-offset: 5px;
+}
+button {
+  border: 0;
+  background: none;
+}
+h1,
+h2,
+p {
+  margin: 0;
+}
+h1,
+h2 {
+  font-weight: 400;
+}
+h1 {
+  font-family: 'Lora', serif;
+  font-size: clamp(38px, 4.2vw, 66px);
+  line-height: 1.12;
+  letter-spacing: -2.5px;
+}
+h1 em {
+  color: #648250;
+  font-weight: 400;
+}
+h2 {
+  font-family: 'Lora', serif;
+  line-height: 1.2;
+  letter-spacing: -0.7px;
+}
+p {
+  line-height: 1.65;
+}
+.eyebrow {
+  font:
+    10px 'DM Sans',
+    sans-serif;
+  letter-spacing: 1.6px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.eyebrow i,
+.window-top i,
+.console-label i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #b86a3d;
+  box-shadow: 0 0 0 3px #b86a3d18;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.text-action {
+  padding: 0 0 6px;
+  border-bottom: 1px solid currentColor;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+}
+.text-action:hover {
+  color: var(--accent);
+}
+.world-header {
+  height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  position: relative;
+  z-index: 20;
+  border-bottom: 1px solid #26453318;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.brand small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  margin-top: 5px;
+  font-weight: 400;
+}
+.brand-pixel {
+  position: relative;
+  width: 37px;
+  height: 39px;
+  background: #284e3b;
+  color: #e9edd9;
+  font:
+    42px/0.85 'Pixelify Sans',
+    monospace;
+  text-align: center;
+}
+.brand-pixel span {
+  position: absolute;
+  right: -5px;
+  top: -7px;
+  font-size: 20px;
+  color: #c97443;
+}
+.world-header nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  font-size: 12px;
+}
+.hello {
+  border: 1px solid #29493650;
+  padding: 10px 18px;
+  display: flex;
+  gap: 32px;
+}
+.skip {
+  position: fixed;
+  left: 20px;
+  top: -100px;
+  z-index: 100;
+  background: white;
+  padding: 15px;
+}
+.skip:focus {
+  top: 15px;
+}
+.variant {
+  display: none;
+}
+[data-variant='1'] .variant-1,
+[data-variant='2'] .variant-2,
+[data-variant='3'] .variant-3,
+[data-variant='4'] .variant-4,
+[data-variant='5'] .variant-5 {
+  display: block;
+}
+.atlas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2;
+}
+.map-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+.map-places {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.map-pin {
+  position: absolute;
+  pointer-events: auto;
+  background: #f8f5e9eb;
+  box-shadow: 3px 3px 0 #203e3420;
+  padding: 6px 9px;
+  font:
+    12px 'Pixelify Sans',
+    monospace;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  border: 1px solid #38564155;
+}
+.map-pin span {
+  font:
+    8px 'DM Sans',
+    sans-serif;
+  opacity: 0.65;
+}
+.map-pin i {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 6px;
+  height: 6px;
+  background: #b85737;
+  box-shadow: 0 0 0 3px #fbf5df;
+}
+.map-pin:hover {
+  background: #ffdd91;
+}
+.map-pin.michigan {
+  left: 26.67%;
+  top: 25%;
+}
+.map-pin.germany {
+  left: 53.02%;
+  top: 21.5%;
+}
+.map-pin.durham {
+  left: 28.12%;
+  top: 33%;
+  transform: translate(-50%, 0);
+}
+.map-pin.durham i {
+  top: -8px;
+  bottom: auto;
+}
+.scene-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  background: #c6dacf;
+}
+.variant-1 {
+  position: relative;
+  min-height: 850px;
+  height: calc(100svh - 94px);
+  overflow: hidden;
+  background: #e5eddb;
+}
+.full-world {
+  position: absolute;
+  left: 0;
+  top: 220px;
+  width: 100%;
+  opacity: 0.98;
+}
+.atlas-intro {
+  position: absolute;
+  z-index: 3;
+  left: 4%;
+  top: 40px;
+  pointer-events: none;
+}
+.atlas-intro > * {
+  pointer-events: auto;
+}
+.atlas-intro h1 {
+  font-size: clamp(38px, 3.4vw, 56px);
+  margin: 18px 0;
+}
+.atlas-intro > p:not(.eyebrow) {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.place-window {
+  position: absolute;
+  z-index: 4;
+  right: 4%;
+  bottom: 130px;
+  width: 330px;
+  background: var(--paper);
+  box-shadow: 7px 7px 0 #35513d20;
+  border: 1px solid #a6bba0;
+}
+.window-top {
+  padding: 13px 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #a6bba0;
+}
+.window-top i {
+  width: 5px;
+  height: 5px;
+}
+.window-copy {
+  padding: 21px 23px 23px;
+}
+.window-copy .eyebrow {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.window-copy h2 {
+  font-size: 23px;
+  margin: 9px 0;
+}
+.window-copy > p:not(.eyebrow) {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin-bottom: 17px;
+}
+.window-copy .text-action {
+  font-size: 11px;
+}
+.ocean-note {
+  position: absolute;
+  left: 40%;
+  top: 68%;
+  font:
+    italic 14px/1.7 'Lora',
+    serif;
+  color: #637f72;
+  transform: rotate(-6deg);
+  text-align: center;
+  pointer-events: none;
+}
+.atlas-compass {
+  position: absolute;
+  right: 5%;
+  top: 50px;
+  font: 9px 'DM Sans';
+  text-align: center;
+  line-height: 1.3;
+  opacity: 0.6;
+}
+.atlas-compass b {
+  font-size: 36px;
+  font-weight: 400;
+}
+.atlas-bottom {
+  position: absolute;
+  left: 4%;
+  bottom: 135px;
+  z-index: 5;
+  width: min(570px, 52%);
+}
+.atlas-bottom > .eyebrow {
+  margin-bottom: 16px;
+  font-size: 9px;
+}
+.atlas-bottom .eyebrow > span {
+  opacity: 0.55;
+  margin-left: 10px;
+}
+.route-buttons {
+  display: flex;
+  border-top: 1px solid #63826966;
+  padding-top: 13px;
+}
+.route-buttons button {
+  position: relative;
+  text-align: left;
+  flex: 1;
+  padding: 0 8px 0 0;
+}
+.route-buttons small {
+  display: block;
+  font: 12px 'Pixelify Sans';
+  margin-bottom: 7px;
+}
+.route-buttons strong {
+  display: block;
+  font-size: 12px;
+}
+.route-buttons button > span {
+  font-size: 10px;
+  color: var(--muted);
+}
+.route-buttons button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -17px;
+  width: 7px;
+  height: 7px;
+  background: #8aa083;
+  box-shadow: 0 0 0 4px #e5eddb;
+}
+.route-buttons button[aria-current]::before {
+  background: #b75032;
+}
+.route-buttons button[aria-current] strong {
+  color: #b75032;
+}
+.flight-status {
+  font: 10px 'Pixelify Sans';
+  margin-top: 18px;
+  color: #4f695c;
+}
+.review-tools {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 40;
+  padding: 18px 4%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(transparent, #e5eddbf0);
+}
+.review-tools > * {
+  pointer-events: auto;
+}
+.prototype-switcher {
+  background: #21392f;
+  color: #f6f1df;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid #6c827555;
+  padding: 10px 13px;
+  box-shadow: 0 5px 22px #12271c30;
+  border-radius: 8px;
+}
+.prototype-switcher > button {
+  font-size: 20px;
+  padding: 5px;
+}
+.prototype-switcher > div > span {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: #bdcbbd;
+  margin-bottom: 3px;
+}
+.prototype-switcher > div > span b {
+  font-weight: 400;
+  margin-left: 10px;
+}
+.prototype-switcher strong {
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+  min-width: 155px;
+}
+.variant-dots {
+  display: flex;
+  gap: 4px;
+}
+.variant-dots button {
+  font-size: 10px;
+  width: 24px;
+  height: 26px;
+  color: #afc2b1;
+  border-radius: 3px;
+}
+.variant-dots button[aria-current] {
+  background: #e8edce;
+  color: #21392f;
+}
+.motion-button,
+.original-link {
+  font-size: 10px;
+}
+.motion-button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.original-link {
+  border-bottom: 1px solid #6a7f7050;
+  padding-bottom: 4px;
+}
+[data-variant='2'] {
+  background: #f2eedf;
+}
+.variant-2 {
+  position: relative;
+  grid-template-columns: 60% 40%;
+}
+[data-variant='2'] .variant-2 {
+  display: grid;
+}
+.story-world {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  background: #dfe9ca;
+  overflow: hidden;
+  align-self: start;
+  border-right: 1px solid #9bb49b;
+}
+.story-heading {
+  padding: 45px 7%;
+  position: relative;
+  z-index: 2;
+}
+.story-heading h1 {
+  font-size: clamp(34px, 3.3vw, 58px);
+  margin: 20px 0;
+}
+.story-heading > p:last-child {
+  font: 13px 'Pixelify Sans';
+  color: #587354;
+}
+.story-landscape {
+  position: absolute;
+  bottom: 140px;
+  width: 100%;
+}
+.story-landscape .scene-canvas {
+  width: 100%;
+  height: auto;
+}
+.story-map {
+  position: absolute;
+  right: 25px;
+  top: 28px;
+  width: 135px;
+  border: 1px solid #a9b894;
+  box-shadow: 4px 4px 0 #8ba58033;
+}
+.story-hud {
+  position: absolute;
+  bottom: 106px;
+  left: 7%;
+  right: 7%;
+  display: flex;
+  justify-content: space-between;
+  font: 14px 'Pixelify Sans';
+}
+.story-chapters article {
+  min-height: 95svh;
+  padding: 70px 12% 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border-bottom: 1px solid #c6c4ae;
+}
+.story-number {
+  font: 80px 'Pixelify Sans';
+  color: #b7bda2;
+  margin-bottom: 25px;
+}
+.story-chapters h2 {
+  font-size: 38px;
+  margin: 18px 0;
+}
+.story-chapters article > p:not(.eyebrow) {
+  font-size: 14px;
+  color: var(--muted);
+}
+.tag-line {
+  font-size: 9px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  margin: 25px 0;
+}
+.scroll-cue {
+  font-size: 10px;
+  color: #707c68;
+  margin-top: 65px;
+}
+[data-variant='3'] {
+  background: #e6d7b8;
+  color: #354839;
+}
+[data-variant='3'] .world-header {
+  border-color: #b5ac9350;
+}
+.variant-3 {
+  max-width: 1230px;
+  margin: auto;
+  padding: 35px 45px 135px;
+}
+.game-title {
+  text-align: center;
+}
+.game-title h1 {
+  font: 58px/0.86 'Pixelify Sans';
+  letter-spacing: -1px;
+  margin: 18px 0;
+  color: #345440;
+  text-shadow: 3px 3px #c4c6a1;
+}
+.game-title h1 span {
+  color: #a64f35;
+}
+.game-title sup {
+  font-size: 15px;
+  vertical-align: top;
+}
+.game-title > p:last-child {
+  font-size: 12px;
+  margin-top: 16px;
+}
+.game-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 60px;
+  margin-top: 32px;
+  align-items: start;
+}
+.console {
+  background: #a9b591;
+  padding: 23px;
+  border: 2px solid #5d7050;
+  border-radius: 16px 16px 65px 16px;
+  box-shadow:
+    inset 4px 4px #d0d6b3,
+    inset -5px -5px #899877,
+    9px 10px #6e78563b;
+}
+.console-label {
+  display: flex;
+  justify-content: space-between;
+  font: 10px 'Pixelify Sans';
+  letter-spacing: 1px;
+  margin: 0 3px 16px;
+}
+.console-label i {
+  background: #b65339;
+}
+.game-screen {
+  border: 10px solid #405141;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #f1efcf;
+}
+.game-screen-top {
+  display: flex;
+  justify-content: space-between;
+  background: #273b2e;
+  color: #f1e5ad;
+  font: 10px 'Pixelify Sans';
+  padding: 10px;
+}
+.game-dialogue {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border-top: 3px solid #425844;
+  padding: 15px;
+  min-height: 119px;
+}
+.portrait {
+  font: 38px 'Pixelify Sans';
+  background: #d4d8b2;
+  width: 40px;
+  flex-shrink: 0;
+  text-align: center;
+  color: #b75a36;
+}
+.game-dialogue b {
+  font: 14px 'Pixelify Sans';
+}
+.game-dialogue p {
+  font-size: 10px;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+.game-dialogue button {
+  padding: 0;
+  align-self: end;
+}
+.console-controls {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 20px;
+  height: 65px;
+}
+.dpad {
+  display: flex;
+  align-items: center;
+  color: #edf0cc;
+  background: #354937;
+  box-shadow: 3px 3px #718167;
+  border: 3px solid #849572;
+}
+.dpad button {
+  padding: 12px 8px;
+}
+.dpad span {
+  font-size: 25px;
+}
+.start-button {
+  font: 9px 'DM Sans';
+  letter-spacing: 1px;
+  max-width: 75px;
+  padding: 7px;
+  border-radius: 20px;
+  background: #526d51;
+  color: #f2eacb;
+  box-shadow: 0 4px #718368;
+}
+.a-button {
+  font: 20px 'Pixelify Sans';
+  border-radius: 100%;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: #b9593e;
+  box-shadow: 3px 4px #844935;
+  color: #f8e5bb;
+}
+.speaker {
+  font-size: 23px;
+  transform: rotate(-20deg);
+  color: #728266;
+  margin-left: auto;
+}
+.quest-log {
+  padding-top: 8px;
+}
+.quest-log h2 {
+  font: 30px 'Pixelify Sans';
+  margin: 8px 0 22px;
+}
+.quest {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 10px;
+  border-top: 1px solid #a89f8555;
+  text-align: left;
+}
+.quest > span {
+  font: 20px 'Pixelify Sans';
+  opacity: 0.6;
+}
+.quest strong {
+  font-size: 12px;
+  display: block;
+}
+.quest small {
+  font-size: 10px;
+  display: block;
+  margin-top: 3px;
+  opacity: 0.65;
+}
+.quest b {
+  margin-left: auto;
+  font-weight: 400;
+}
+.quest[aria-current] {
+  background: #f9efcc;
+  box-shadow: 4px 4px #bfb292;
+}
+.quest-map {
+  width: 180px;
+  float: right;
+  margin-top: 20px;
+  border: 1px solid #b4b091;
+}
+.game-tip {
+  font-size: 10px;
+  line-height: 1.8;
+  margin-top: 32px;
+  max-width: 160px;
+}
+[data-variant='4'] {
+  background: #f6f1e6;
+  color: #3e473b;
+}
+.variant-4 {
+  max-width: 1180px;
+  margin: auto;
+  padding: 55px 50px 150px;
+}
+.journal-hero {
+  position: relative;
+}
+.journal-hero h1 {
+  font-size: clamp(34px, 4vw, 59px);
+  margin: 20px 0;
+}
+.journal-hero > p:last-of-type {
+  font-size: 14px;
+  color: #788070;
+}
+.postmark {
+  position: absolute;
+  right: 20px;
+  top: 55px;
+  font: 12px/1.5 'Pixelify Sans';
+  text-align: center;
+  transform: rotate(12deg);
+  color: #a76949;
+  border: 2px solid #ae8061;
+  border-radius: 50%;
+  width: 135px;
+  height: 135px;
+  padding-top: 24px;
+  outline: 1px solid #ae8061;
+  outline-offset: 5px;
+}
+.postmark b {
+  font-size: 23px;
+}
+.foldout {
+  margin: 40px 0 70px;
+  border: 1px solid #bfc5ad;
+  background: #e7edda;
+  position: relative;
+  box-shadow: 5px 7px #d5d2bf55;
+}
+.foldout::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 45px;
+  left: 33%;
+  width: 33%;
+  border-left: 1px solid #60774622;
+  border-right: 1px solid #60774622;
+  pointer-events: none;
+}
+.foldout-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 20px;
+  background: #f8f5ec;
+  border-top: 1px solid #bfc5ad;
+}
+.foldout-caption > span {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+.foldout-caption button {
+  font-size: 10px;
+  padding: 0;
+  border: 0;
+}
+.postcards {
+  display: flex;
+  flex-direction: column;
+  gap: 65px;
+}
+.postcard {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 55px;
+  align-items: center;
+  padding-bottom: 55px;
+  border-bottom: 1px solid #cdc8b6;
+}
+.postcard:nth-child(even) .postcard-picture {
+  order: 2;
+  transform: rotate(2deg);
+}
+.postcard-picture {
+  padding: 12px 12px 0;
+  background: #fffdf4;
+  box-shadow: 2px 4px 12px #655c4520;
+  transform: rotate(-2deg);
+  border: 1px solid #ded8c7;
+}
+.photo-caption {
+  font: 14px 'Pixelify Sans';
+  display: block;
+  text-align: center;
+  padding: 15px;
+}
+.postcard-letter {
+  position: relative;
+  padding-top: 30px;
+}
+.postcard-letter .eyebrow {
+  max-width: 75%;
+}
+.postcard-letter h2 {
+  font-size: 32px;
+  margin: 20px 0;
+}
+.postcard-letter > p:not(.eyebrow) {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+.stamp {
+  position: absolute;
+  right: 0;
+  top: -15px;
+  width: 58px;
+  height: 68px;
+  border: 3px dotted #a8b298;
+  color: #7f9269;
+  text-align: center;
+  padding-top: 3px;
+  font: 30px 'Pixelify Sans';
+  transform: rotate(8deg);
+}
+.stamp small {
+  display: block;
+  font-size: 7px;
+}
+.journal-end {
+  text-align: center;
+  font: italic 24px/2 'Lora';
+  margin-top: 60px;
+}
+.journal-end a {
+  font: 12px 'DM Sans';
+  border-bottom: 1px solid #789071;
+  padding-bottom: 7px;
+}
+[data-variant='5'] {
+  --ink: #dce8d7;
+  --muted: #9dafaa;
+  --paper: #172e2d;
+  --accent: #e8c273;
+  --line: #354b43;
+  background: #112423;
+  color: var(--ink);
+}
+[data-variant='5'] .world-header {
+  border-color: #a9c2af22;
+}
+[data-variant='5'] .brand-pixel {
+  background: #d3dfa8;
+  color: #243d32;
+}
+[data-variant='5'] .hello {
+  border-color: #9fb1a455;
+}
+[data-variant='5'] .review-tools {
+  background: linear-gradient(transparent, #112423f5);
+}
+[data-variant='5'] h1 em {
+  color: #d9c283;
+}
+.variant-5 {
+  padding: 34px 4% 130px;
+  max-width: 1600px;
+  margin: auto;
+}
+.night-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 30px;
+}
+.night-heading h1 {
+  font-size: 46px;
+  margin-top: 13px;
+}
+.night-heading > p {
+  font-size: 11px;
+  color: #a8bcb0;
+  text-align: right;
+  line-height: 1.8;
+}
+.night-heading .eyebrow {
+  color: #b9c695;
+}
+.night-heading .eyebrow i {
+  background: #bdc67a;
+}
+.flight-deck {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 20px;
+}
+.radar,
+.project-monitor,
+.departure-board {
+  border: 1px solid #78918440;
+  background: #142a28;
+}
+.panel-heading {
+  padding: 14px 17px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #78918440;
+  font: 9px 'DM Sans';
+  letter-spacing: 1px;
+  color: #adc0ad;
+}
+.radar .atlas {
+  margin: 20px 0 0;
+}
+.radar-footer {
+  padding: 20px 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font: 10px 'Pixelify Sans';
+  color: #c9d7b3;
+}
+.radar-footer button {
+  font: 8px 'DM Sans';
+  color: #e1c57c;
+  white-space: nowrap;
+}
+.monitor-copy {
+  padding: 21px;
+}
+.monitor-copy .eyebrow {
+  font-size: 8px;
+  color: #bdc994;
+}
+.monitor-copy h2 {
+  font-size: 25px;
+  margin: 10px 0;
+}
+.monitor-copy > p:not(.eyebrow) {
+  font-size: 12px;
+  color: #a7bbb0;
+  margin-bottom: 17px;
+}
+.monitor-copy .text-action {
+  font-size: 10px;
+  color: #e4c980;
+}
+.live-dot {
+  color: #d49c73;
+}
+.departure-board {
+  margin-top: 22px;
+}
+.departures {
+  display: flex;
+}
+.departures button {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 25px 1fr 18px;
+  text-align: left;
+  gap: 3px 8px;
+  padding: 17px;
+  border-right: 1px solid #78918440;
+}
+.departures button > span {
+  grid-row: span 2;
+  color: #c3b570;
+  font: 16px 'Pixelify Sans';
+}
+.departures strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.departures small {
+  font-size: 9px;
+  color: #8da99a;
+  grid-column: 2;
+}
+.departures b {
+  grid-column: 3;
+  grid-row: 1/3;
+  font-weight: 400;
+  align-self: center;
+}
+.departures button[aria-current] {
+  background: #31463a;
+}
+.variant-5 .map-pin {
+  background: #203d31;
+  color: #e4e6c2;
+  border-color: #8ca178;
+}
+.variant-5 .map-pin i {
+  background: #e9c67b;
+  box-shadow: 0 0 0 3px #294838;
+}
+.work-dialog {
+  color: #294334;
+  background: #fbf7e9;
+  border: 1px solid #9cae91;
+  padding: 45px;
+  width: min(660px, 90vw);
+  max-height: 85svh;
+  box-shadow: 10px 10px #17362333;
+}
+.work-dialog::backdrop {
+  background: #142f27b8;
+  backdrop-filter: blur(4px);
+}
+.dialog-close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+}
+.work-dialog h2 {
+  font-size: 32px;
+  margin: 20px 0;
+}
+.work-dialog > p:not(.eyebrow) {
+  font-size: 14px;
+  color: #526e62;
+}
+.work-dialog article {
+  border-top: 1px solid #c9d0b9;
+  margin-top: 24px;
+  padding-top: 18px;
+}
+.work-dialog h3 {
+  font: 20px 'Lora';
+  margin: 0 0 12px;
+}
+.work-dialog article p {
+  font-size: 13px;
+  line-height: 1.75;
+}
+.work-dialog > a {
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 30px;
+  border-bottom: 1px solid currentColor;
+}
+.noscript {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: #faf1d7;
+}
+.noscript a {
+  text-decoration: underline;
+}
+@media (min-width: 1550px) {
+  .full-world {
+    top: 120px;
+  }
+  .variant-1 {
+    min-height: 900px;
+  }
+  .place-window {
+    width: 380px;
+  }
+  .atlas-intro {
+    top: 65px;
+  }
+  .atlas-bottom {
+    bottom: 140px;
+  }
+}
+@media (max-width: 1100px) {
+  .variant-1 {
+    height: auto;
+    min-height: 980px;
+  }
+  .full-world {
+    top: 290px;
+    width: 120%;
+    left: -12%;
+  }
+  .place-window {
+    width: 300px;
+    right: 4%;
+    bottom: 120px;
+  }
+  .atlas-bottom {
+    bottom: 150px;
+    width: 52%;
+  }
+  .atlas-intro h1 {
+    font-size: 45px;
+  }
+  .ocean-note {
+    top: 65%;
+    left: 17%;
+  }
+  .game-layout {
+    gap: 30px;
+  }
+  .game-tip {
+    max-width: none;
+    clear: both;
+  }
+  .quest-map {
+    float: none;
+    width: 100%;
+  }
+  .story-map {
+    top: auto;
+    bottom: 38px;
+    width: 130px;
+  }
+  .story-heading h1 {
+    font-size: 42px;
+  }
+  .story-chapters h2 {
+    font-size: 32px;
+  }
+  .night-heading h1 {
+    font-size: 40px;
+  }
+  .flight-deck {
+    grid-template-columns: 1.4fr 1fr;
+  }
+  .radar {
+    display: flex;
+    flex-direction: column;
+  }
+  .radar .atlas {
+    margin: auto 0;
+  }
+  .postmark {
+    right: 0;
+    width: 110px;
+    height: 110px;
+    font-size: 10px;
+    top: 90px;
+    padding-top: 14px;
+  }
+  .journal-hero h1 {
+    font-size: 44px;
+  }
+  .variant-4 {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+}
+@media (max-width: 760px) {
+  .world-header {
+    height: 76px;
+    padding: 0 5%;
+  }
+  .brand {
+    font-size: 12px;
+    gap: 10px;
+  }
+  .brand small {
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+  .brand-pixel {
+    width: 29px;
+    height: 31px;
+    font-size: 33px;
+  }
+  .world-header nav {
+    gap: 14px;
+    font-size: 10px;
+  }
+  .world-header nav a:first-child {
+    display: none;
+  }
+  .hello {
+    padding: 7px 10px;
+    gap: 10px;
+  }
+  .review-tools {
+    padding: 10px 12px 14px;
+    justify-content: center;
+    background: linear-gradient(transparent, #e5eddb);
+  }
+  .prototype-switcher {
+    padding: 9px;
+    gap: 9px;
+    max-width: 100%;
+  }
+  .prototype-switcher strong {
+    font-size: 11px;
+    min-width: 139px;
+  }
+  .variant-dots {
+    gap: 1px;
+  }
+  .variant-dots button {
+    width: 21px;
+  }
+  .prototype-switcher > button {
+    font-size: 16px;
+    padding: 3px;
+  }
+  .original-link {
+    display: none;
+  }
+  .motion-button {
+    position: absolute;
+    right: 14px;
+    bottom: 83px;
+    background: #f9f5e9ed;
+    padding: 8px;
+    color: #284936;
+    border: 1px solid #738b6940;
+  }
+  .motion-button span {
+    font-size: 8px;
+  }
+  .variant-1 {
+    min-height: 1100px;
+    overflow: hidden;
+  }
+  .atlas-intro {
+    left: 6%;
+    top: 30px;
+  }
+  .atlas-intro h1 {
+    font-size: 39px;
+    margin: 14px 0;
+  }
+  .atlas-intro .eyebrow {
+    font-size: 8px;
+  }
+  .atlas-intro > p:not(.eyebrow) {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  .full-world {
+    top: 337px;
+    width: 155%;
+    left: -14%;
+  }
+  .full-world .map-pin {
+    font-size: 9px;
+    padding: 5px;
+    gap: 3px;
+  }
+  .full-world .map-pin span {
+    font-size: 6px;
+  }
+  .ocean-note {
+    display: none;
+  }
+  .atlas-compass {
+    right: 7%;
+    top: 55px;
+    font-size: 7px;
+  }
+  .atlas-compass b {
+    font-size: 28px;
+  }
+  .place-window {
+    top: 612px;
+    bottom: auto;
+    left: 6%;
+    right: 6%;
+    width: auto;
+    display: grid;
+    grid-template-columns: 42% 58%;
+    align-items: stretch;
+  }
+  .window-top {
+    grid-column: 1/-1;
+    padding: 11px;
+  }
+  .place-window .scene-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 48%;
+  }
+  .window-copy {
+    padding: 17px;
+  }
+  .window-copy h2 {
+    font-size: 19px;
+  }
+  .window-copy > p:not(.eyebrow) {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+  .window-copy .eyebrow {
+    font-size: 6px;
+  }
+  .window-copy .text-action {
+    font-size: 9px;
+    gap: 10px;
+  }
+  .atlas-bottom {
+    top: 920px;
+    bottom: auto;
+    left: 6%;
+    width: 88%;
+  }
+  .atlas-bottom > .eyebrow {
+    font-size: 8px;
+  }
+  .route-buttons strong {
+    font-size: 10px;
+  }
+  .route-buttons button > span {
+    font-size: 9px;
+  }
+  .flight-status {
+    font-size: 9px;
+  }
+  .story-world {
+    height: 54svh;
+    top: 0;
+    border-right: 0;
+    border-bottom: 1px solid #a6b999;
+    z-index: 4;
+  }
+  .variant-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .story-heading {
+    padding: 22px 6%;
+  }
+  .story-heading .eyebrow {
+    font-size: 7px;
+  }
+  .story-heading h1 {
+    font-size: 30px;
+    margin: 9px 0;
+    letter-spacing: -1px;
+  }
+  .story-heading > p:last-child {
+    font-size: 10px;
+  }
+  .story-landscape {
+    width: 100%;
+    bottom: 20px;
+  }
+  .story-landscape .scene-canvas {
+    height: 27svh;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+  .story-hud {
+    bottom: 6px;
+    font-size: 10px;
+  }
+  .story-map {
+    width: 90px;
+    top: 20px;
+    bottom: auto;
+    right: 14px;
+  }
+  .story-heading {
+    padding-right: 100px;
+  }
+  .story-chapters article {
+    min-height: 70svh;
+    padding: 30px 8% 90px;
+    scroll-margin-top: 54svh;
+  }
+  .story-chapters h2 {
+    font-size: 30px;
+  }
+  .story-number {
+    font-size: 44px;
+    margin-bottom: 10px;
+  }
+  .story-chapters article > p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .scroll-cue {
+    margin-top: 35px;
+  }
+  .variant-3 {
+    padding: 30px 6% 130px;
+  }
+  .game-title .eyebrow {
+    font-size: 8px;
+  }
+  .game-title h1 {
+    font-size: 46px;
+  }
+  .game-title > p:last-child {
+    font-size: 11px;
+  }
+  .game-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .console {
+    padding: 17px;
+    border-radius: 12px 12px 50px 12px;
+  }
+  .console-controls {
+    gap: 15px;
+    margin-top: 10px;
+  }
+  .game-screen {
+    border-width: 7px;
+  }
+  .game-dialogue {
+    padding: 12px;
+    min-height: 125px;
+  }
+  .game-dialogue p {
+    font-size: 10px;
+  }
+  .speaker {
+    font-size: 18px;
+  }
+  .quest-map {
+    width: 48%;
+    float: right;
+    margin-top: 15px;
+  }
+  .game-tip {
+    clear: none;
+    width: 44%;
+    font-size: 9px;
+  }
+  .variant-4 {
+    padding: 30px 6% 130px;
+  }
+  .journal-hero h1 {
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin: 16px 0;
+  }
+  .journal-hero > .eyebrow {
+    font-size: 7px;
+  }
+  .journal-hero > p:last-of-type {
+    font-size: 11px;
+  }
+  .postmark {
+    display: none;
+  }
+  .foldout {
+    margin: 28px 0 45px;
+  }
+  .foldout .map-pin {
+    font-size: 8px;
+    padding: 3px;
+  }
+  .foldout .map-pin span {
+    display: none;
+  }
+  .foldout-caption {
+    padding: 10px;
+    gap: 15px;
+  }
+  .foldout-caption > span {
+    font-size: 6px;
+    letter-spacing: 1px;
+    max-width: 55%;
+  }
+  .foldout-caption button {
+    font-size: 8px;
+  }
+  .postcard {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-bottom: 35px;
+  }
+  .postcard:nth-child(even) .postcard-picture {
+    order: 0;
+  }
+  .postcard-letter h2 {
+    font-size: 29px;
+  }
+  .postcards {
+    gap: 45px;
+  }
+  .stamp {
+    top: 12px;
+  }
+  .postcard-letter h2 {
+    max-width: 83%;
+  }
+  .journal-end {
+    font-size: 18px;
+  }
+  .journal-end a {
+    font-size: 10px;
+  }
+  .night-heading {
+    display: block;
+    margin-bottom: 25px;
+  }
+  .night-heading h1 {
+    font-size: 36px;
+    letter-spacing: -1.5px;
+  }
+  .night-heading .eyebrow {
+    font-size: 8px;
+  }
+  .night-heading > p {
+    font-size: 10px;
+    text-align: left;
+    margin-top: 18px;
+  }
+  .variant-5 {
+    padding: 28px 5% 145px;
+  }
+  .flight-deck {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .radar .atlas {
+    margin: 30px 0 10px;
+  }
+  .panel-heading {
+    font-size: 7px;
+    padding: 12px;
+  }
+  .radar .map-pin {
+    font-size: 8px;
+    padding: 4px;
+  }
+  .radar .map-pin span {
+    display: none;
+  }
+  .radar-footer {
+    padding: 15px 12px;
+    font-size: 9px;
+    line-height: 1.5;
+  }
+  .radar-footer button {
+    font-size: 7px;
+  }
+  .project-monitor {
+    display: grid;
+    grid-template-columns: 42% 58%;
+  }
+  .project-monitor .panel-heading {
+    grid-column: 1/-1;
+  }
+  .project-monitor .scene-canvas {
+    height: 100%;
+    object-fit: cover;
+  }
+  .monitor-copy {
+    padding: 14px;
+  }
+  .monitor-copy h2 {
+    font-size: 21px;
+  }
+  .monitor-copy > p:not(.eyebrow) {
+    font-size: 10px;
+  }
+  .monitor-copy .eyebrow {
+    font-size: 6px;
+  }
+  .departures {
+    flex-direction: column;
+  }
+  .departures button {
+    grid-template-columns: 25px 1fr 65px 15px;
+    border-right: 0;
+    border-bottom: 1px solid #78918440;
+    padding: 13px;
+  }
+  .departures button > span {
+    grid-row: 1;
+  }
+  .departures small {
+    grid-column: 3;
+    align-self: center;
+  }
+  .departures b {
+    grid-row: 1;
+    grid-column: 4;
+  }
+  .work-dialog {
+    padding: 30px 24px;
+  }
+  .work-dialog h2 {
+    font-size: 27px;
+  }
+  .work-dialog > p:not(.eyebrow) {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* Keep each complete pixel scene and the whole globe visible on phones. */
+@media (max-width: 760px) {
+  .variant-1 {
+    min-height: 1330px;
+  }
+  .full-world {
+    top: 345px;
+    left: 0;
+    width: 100%;
+  }
+  .full-world .map-pin {
+    font-size: 8px;
+    padding: 4px;
+  }
+  .full-world .map-pin span {
+    display: none;
+  }
+  .place-window {
+    top: 575px;
+    display: block;
+  }
+  .place-window .scene-canvas {
+    height: auto;
+    object-fit: contain;
+  }
+  .window-copy {
+    padding: 19px 22px;
+  }
+  .window-copy h2 {
+    font-size: 23px;
+  }
+  .window-copy > p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .window-copy .eyebrow {
+    font-size: 8px;
+  }
+  .window-copy .text-action {
+    font-size: 11px;
+  }
+  .atlas-bottom {
+    top: 1120px;
+  }
+  .project-monitor {
+    display: block;
+  }
+  .project-monitor .scene-canvas {
+    height: auto;
+    object-fit: contain;
+  }
+  .monitor-copy {
+    padding: 21px;
+  }
+  .monitor-copy h2 {
+    font-size: 25px;
+  }
+  .monitor-copy > p:not(.eyebrow) {
+    font-size: 12px;
+  }
+  .monitor-copy .eyebrow {
+    font-size: 8px;
+  }
+}

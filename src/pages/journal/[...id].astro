@@ -1,0 +1,61 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../layouts/JournalLayout.astro';
+import { publishedPosts, formatDate } from '../../lib/journal';
+export async function getStaticPaths() {
+  return (await publishedPosts()).map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const readingTime = Math.max(
+  1,
+  Math.ceil((post.body ?? '').split(/\s+/).length / 220),
+);
+---
+
+<Layout
+  title={`${post.data.title} — Riccardo Salzmann`}
+  description={post.data.description}
+>
+  <article class="article-page">
+    <a class="breadcrumb" href="/journal/?open=1">
+      ← Back to the field journal
+    </a>
+    <header class="article-header">
+      <p class="eyebrow">FIELD JOURNAL · {post.data.tags.join(' / ')}</p>
+      <h1>{post.data.title}</h1>
+      <p class="article-description">{post.data.description}</p>
+      <p class="article-byline">
+        Riccardo Salzmann <span>·</span>{' '}
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date)}
+        </time>{' '}
+        <span>·</span> {readingTime} min read
+      </p>
+    </header>
+    <div class="article-layout">
+      <div class="prose">
+        <Content />
+      </div>
+      {headings.some((h) => h.depth === 2) && (
+        <nav class="article-toc" aria-label="On this page">
+          <p class="eyebrow">IN THIS FIELD NOTE</p>
+          {headings
+            .filter((h) => h.depth === 2)
+            .map((h) => (
+              <a href={`#${h.slug}`}>{h.text}</a>
+            ))}
+        </nav>
+      )}
+    </div>
+    <div class="article-end">
+      <span class="pixel-note">Thanks for reading.</span>
+      <a class="text-link" href="mailto:salzmanr@umich.edu">
+        Continue the conversation ↗
+      </a>
+    </div>
+  </article>
+</Layout>

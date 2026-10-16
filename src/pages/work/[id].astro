@@ -1,0 +1,159 @@
+---
+import Layout from '../../layouts/PortfolioLayout.astro';
+import { work, profile } from '../../data/portfolio';
+import ProjectStory from '../../components/ProjectStory.astro';
+import SmtOverview from '../../components/SmtOverview.astro';
+export function getStaticPaths() {
+  return work.map((section) => ({
+    params: { id: section.id },
+    props: { section },
+  }));
+}
+const { section } = Astro.props;
+const groups = section.experiences
+  ? section.experiences.map((experience) => ({
+      experience,
+      projects: experience.projectIds.map((id) =>
+        section.projects.find((project) => project.id === id)!,
+      ),
+    }))
+  : [{ experience: null, projects: section.projects }];
+const next =
+  work[(work.findIndex((item) => item.id === section.id) + 1) % work.length]!;
+---
+
+<Layout
+  title={`${section.name} — Riccardo Salzmann`}
+  description={section.intro}
+>
+  <article class="content-shell" style={`--accent:${section.accent}`}>
+    <a class="breadcrumb" href="/work/">
+      ← All work
+    </a>
+    <header class="content-header">
+      <p class="kicker">
+        {section.category} / {section.organization}
+      </p>
+      <h1>{section.heading}</h1>
+      <p class="lede">{section.intro}</p>
+      <div class="section-meta">
+        <strong>{section.role}</strong>
+        <span>{section.dates}</span>
+        <span>{section.location}</span>
+      </div>
+      <ul class="skill-tags">
+        {section.skills.map((skill) => (
+          <li>{skill}</li>
+        ))}
+      </ul>
+    </header>
+    {section.highlights.length > 0 && (
+      <div class="highlights">
+        {section.highlights.map((item) => (
+          <div>
+            <strong>{item.value}</strong>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    )}
+    {section.experiences && (
+      <nav class="experience-index" aria-label="EDAG experiences">
+        {section.experiences.map((experience, index) => (
+          <a href={`#${experience.id}`}>
+            <span class="kicker">
+              0{index + 1} / {experience.dates}
+            </span>
+            <strong>{experience.title}</strong>
+            <span>
+              {experience.location || 'Battery analysis & vehicle wiring'} →
+            </span>
+          </a>
+        ))}
+      </nav>
+    )}
+    {section.id === 'smt' && <SmtOverview />}
+    {section.projects.length > 0 && (
+      <div class="work-body">
+        <nav class="work-toc" aria-label="Projects on this page">
+          <p>IN THIS SECTION</p>
+          {groups.map((group) => (
+            <div>
+              {group.experience && (
+                <a class="toc-experience" href={`#${group.experience.id}`}>
+                  {group.experience.title}
+                  <span>{group.experience.dates}</span>
+                </a>
+              )}
+              {group.projects.map((project) => (
+                <a href={`#${project.id}`}>{project.title}</a>
+              ))}
+            </div>
+          ))}
+        </nav>
+        <div>
+          {groups.map((group) => (
+            <section
+              class:list={{ 'experience-group': !!group.experience }}
+              id={group.experience?.id}
+            >
+              {group.experience && (
+                <header class="experience-heading">
+                  <p class="kicker">
+                    {group.experience.dates}
+                    {group.experience.location &&
+                      ` / ${group.experience.location}`}
+                  </p>
+                  <h2>{group.experience.title}</h2>
+                  <p>{group.experience.summary}</p>
+                </header>
+              )}
+              {group.projects.map((project) => (
+                <ProjectStory
+                  project={project}
+                  nested={!!group.experience}
+                  concise={section.id === 'smt' || section.id === 'quantum'}
+                />
+              ))}
+            </section>
+          ))}
+        </div>
+      </div>
+    )}
+    {section.id === 'michigan' && (
+      <section class="empty-topic">
+        <p class="kicker">FROM UNIVERSITY TO PRACTICE</p>
+        <h2>Learning, then putting it to work.</h2>
+        <p>
+          During the period leading up to graduation, I worked across EDAG
+          internships and co-op terms in Michigan and Germany. My next full-time
+          role brought me to live sports graphics at SMT in March 2025.
+        </p>
+        <div class="action-row">
+          <a class="site-button" href="/work/edag/">
+            Explore the internships →
+          </a>
+          <a class="site-button secondary" href="/work/smt/">
+            See the work at SMT →
+          </a>
+        </div>
+      </section>
+    )}
+    <div class="story-footer">
+      <div>
+        <p>KEEP EXPLORING</p>
+        <a class="text-link" href={`/work/${next.id}/`}>
+          {next.name} →
+        </a>
+      </div>
+      <div class="action-row">
+        <a class="site-button" href={`mailto:${profile.email}`}>
+          Talk about the work ↗
+        </a>
+        <a class="site-button secondary" href="/resume/">
+          View résumé →
+        </a>
+      </div>
+    </div>
+  </article>
+</Layout>

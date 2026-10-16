@@ -1,0 +1,30 @@
+---
+interface Props {
+  mini?: boolean;
+}
+const { mini = false } = Astro.props;
+---
+
+<div class:list={['atlas', { mini }]}>
+  <canvas
+    class="map-canvas"
+    width="960"
+    height="480"
+    role="img"
+    aria-label="Pixel world map. Flight route: Michigan to Ingolstadt, back to Michigan, then Durham."
+  ></canvas>
+  {!mini && (
+    <div class="map-places" aria-label="Explore a location">
+      <button class="map-pin michigan" data-go="0">
+        <span>01 / 03</span> MICHIGAN <i></i>
+      </button>
+      <button class="map-pin germany" data-go="1">
+        <span>02</span> INGOLSTADT <i></i>
+      </button>
+      <button class="map-pin durham" data-go="3">
+        <i></i>
+        <span>04 / 05</span> DURHAM
+      </button>
+    </div>
+  )}
+</div>

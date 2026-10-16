@@ -1,0 +1,254 @@
+---
+import SiteHeader from '../SiteHeader.astro';
+import SiteFooter from '../SiteFooter.astro';
+import { work, deskOrder, type WorkSection } from '../../data/portfolio';
+import { publishedPosts, formatDate } from '../../lib/journal';
+import '../../styles/workbenchPrototype.css';
+import '../../styles/asciiWorkbenchPrototype.css';
+import '../../styles/site.css';
+const posts = (await publishedPosts()).slice(0, 3);
+const notebook: WorkSection = {
+  id: 'notes',
+  name: 'Field notes',
+  organization: 'Field journal',
+  category: 'Writing & ideas',
+  role: 'Notes from the workbench',
+  dates: '',
+  location: '',
+  accent: '#c2a6e6',
+  heading: 'Room for the next thought.',
+  intro: 'Project notes, things learned, and ideas worth returning to.',
+  skills: [],
+  highlights: [],
+  projects: [],
+};
+const sections = deskOrder.map((id) =>
+  id === 'notes' ? notebook : work.find((section) => section.id === id)!,
+);
+---
+
+<div id="workbench-prototype" data-view="A">
+  <a class="wb-skip" href="#wb-index">
+    Skip to work navigation
+  </a>
+  <SiteHeader />
+  <main class="wb-main" id="main">
+    <div class="wb-intro">
+      <p class="wb-eyebrow">RICCARDO@WORKBENCH:~$ EXPLORE</p>
+      <h1>
+        A desk full of <span>possibilities.</span>
+      </h1>
+      <p class="wb-description">
+        I’m Riccardo. I build software for things that move,
+        <br class="wb-wide" /> things you watch, and places you can explore.
+      </p>
+    </div>
+    <div class="wb-scene-wrap">
+      <div class="ascii-hud">
+        <span>
+          <i></i> LIVE 3D / ASCII RENDER
+        </span>
+        <p>Drag to look · W / S or ↑ / ↓ to walk</p>
+        <div>
+          <button data-ascii-reset>Reset view ↺</button>
+          <button data-ascii-density aria-pressed="false">
+            Larger characters
+          </button>
+        </div>
+      </div>
+      <div
+        class="wb-scene"
+        aria-label="Interactive three-dimensional ASCII desk with six experience objects"
+      >
+        <canvas
+          class="wb-canvas"
+          width="720"
+          height="400"
+          aria-hidden="true"
+        ></canvas>
+
+        <p class="ascii-loading" role="status">
+          Building the desk<span>_</span>
+        </p>
+        <div class="wb-object-layer" id="wb-objects">
+          {sections.map((s, i) => (
+            <button
+              class="wb-object"
+              data-object={s.id}
+              aria-label={`Explore ${s.name}: ${s.category}`}
+              style={`--object-color:${s.accent}`}
+            >
+              <span class="wb-object-label">
+                <small>0{i + 1}</small>
+                <span class="wb-label-copy">
+                  <span>{s.name}</span>
+                  <em>{s.category}</em>
+                </span>
+                <b aria-hidden="true">↗</b>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="wb-scene-caption">
+        <span> [ THE CODING DESK ] </span>
+        <span>Six stories. Work, experience, and ideas.</span>
+        <span class="wb-discovery" aria-live="polite">
+          0 / {sections.length} explored
+        </span>
+      </div>
+    </div>
+    <p class="mobile-desk-hint">Drag to look around. Choose a story below.</p>
+    <aside class="wb-index" id="wb-index" aria-label="Explore the work">
+      {sections.map((s, i) => (
+        <button data-open={s.id}>
+          <small>0{i + 1}</small>
+          <span>
+            {s.name}
+            <em>{s.category}</em>
+          </span>
+          <b aria-hidden="true">↗</b>
+        </button>
+      ))}
+    </aside>
+    <div class="desk-reading-link">
+      <span>Six stories to explore.</span>
+      <a href="/work/">Browse all work →</a>
+      <a href="/about/">Meet the person behind the desk →</a>
+    </div>
+  </main>
+  <SiteFooter />
+  <dialog class="wb-dialog" aria-labelledby="wb-dialog-title">
+    <div class="wb-dialog-frame">
+      <header>
+        <span class="wb-dialog-channel">PROJECT STORIES</span>
+        <button class="wb-close" aria-label="Close project stories">
+          Back to the desk <span>×</span>
+        </button>
+      </header>
+      <div class="wb-dialog-screen">
+        <p class="wb-eyebrow" data-dialog-object></p>
+        <h2 id="wb-dialog-title"></h2>
+        <div class="wb-panel-container">
+          {sections.map((s) => (
+            <article
+              class="wb-panel"
+              data-panel={s.id}
+              data-accent={s.accent}
+              hidden
+            >
+              <h3>{s.heading}</h3>
+              <p class="wb-panel-intro">{s.intro}</p>
+              {s.dates && (
+                <div class="desk-role-meta">
+                  <span>{s.role}</span>
+                  <span>{s.dates}</span>
+                  <span>{s.location}</span>
+                </div>
+              )}
+              {s.skills.length > 0 && (
+                <ul class="skill-tags">
+                  {s.skills.map((skill) => (
+                    <li>{skill}</li>
+                  ))}
+                </ul>
+              )}
+              {s.id !== 'notes' && (
+                <a class="site-button desk-full-story" href={`/work/${s.id}/`}>
+                  Explore {s.name} in depth →
+                </a>
+              )}
+              <div class="wb-projects">
+                {s.experiences?.map((experience) => (
+                  <details>
+                    <summary>
+                      <span>
+                        {experience.title}
+                        <small>{experience.dates}</small>
+                      </span>
+                      <b aria-hidden="true">+</b>
+                    </summary>
+                    <p>{experience.summary}</p>
+                    <a
+                      class="text-link"
+                      href={`/work/${s.id}/#${experience.id}`}
+                    >
+                      Explore this experience →
+                    </a>
+                  </details>
+                ))}
+                {!s.experiences &&
+                  s.projects.slice(0, 4).map((p) => (
+                    <details>
+                      <summary>
+                        <span>
+                          {p.title}
+                          <small>{p.summary}</small>
+                        </span>
+                        <b aria-hidden="true">+</b>
+                      </summary>
+                      <p>{p.approach}</p>
+                      <p class="desk-outcome">{p.outcome}</p>
+                      {p.link && (
+                        <a
+                          class="text-link"
+                          href={p.link.href}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {p.link.label} ↗
+                        </a>
+                      )}
+                    </details>
+                  ))}
+              </div>
+              {s.projects.length > 4 && (
+                <p class="desk-more-projects">
+                  <a href={`/work/${s.id}/`}>
+                    See all {s.projects.length} project stories →
+                  </a>
+                </p>
+              )}
+              {s.id === 'michigan' && (
+                <p class="wb-panel-intro">
+                  My university years overlapped with internships and co-op
+                  terms at EDAG in the US and Germany. After graduating, I
+                  joined SMT in March 2025.
+                </p>
+              )}
+              {s.id === 'notes' && (
+                <div class="wb-empty">
+                  {posts.length > 0 ? (
+                    posts.map((post) => (
+                      <a href={`/journal/${post.id}/`}>
+                        {post.data.title}
+                        <small>{formatDate(post.data.date)}</small>
+                      </a>
+                    ))
+                  ) : (
+                    <p>
+                      No published entries yet. The notebook is ready for the
+                      first one.
+                    </p>
+                  )}
+                  <a href="/journal/?open=1">Open the field journal ↗</a>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+      <footer>
+        <span>RICCARDO SALZMANN / SELECTED WORK</span>
+        <a href="/resume/">View résumé ↗</a>
+      </footer>
+    </div>
+  </dialog>
+  <noscript>
+    <p class="wb-nojs">
+      The 3D desk uses JavaScript.{' '}
+      <a href="/work/">Read all experience and project stories</a> or{' '}
+      <a href="/resume/">view the résumé</a>.
+    </p>
+  </noscript>
+</div>
